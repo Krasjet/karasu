@@ -1,0 +1,3 @@
+[submodule "kamome"]
+	path = kamome
+	url = https://github.com/Krasjet/kamome
