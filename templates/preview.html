@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>$if(pagetitle)$$pagetitle$$else$$title$$endif$</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<meta name="referrer" content="no-referrer" />
+<link href="/styles/reset.css" rel="stylesheet" />
+<link href="/styles/doc/main.css" rel="stylesheet" />
+<link href="/fonts/fonts.css" rel="stylesheet" />
+<link href="/styles/doc/syntax.css" rel="stylesheet" />
+</head>
+<body>
+<header>
+<h1>$title$</h1>$if(author)$
+<div class="author sc">by $author$</div>$endif$
+</header>
+<main>
+$body$
+</main>
+</body>
+</html>

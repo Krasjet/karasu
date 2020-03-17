@@ -9,6 +9,7 @@ module Karasu.Handlers.ApiPreviewDoc (PreviewDocApi, previewDoc) where
 import Karasu.Database
 import Karasu.Handler
 import Karasu.Models
+import Karasu.Pandoc.Renderer
 
 import qualified Data.ByteString.Lazy.Char8 as LB8
 
@@ -20,7 +21,6 @@ import GHC.Generics
 import Servant
 import Servant.HTML.Blaze
 import Text.Blaze.Html
-import Text.Pandoc
 
 data PreviewDocBody = PreviewDocBody {
   docId      :: DocId,
@@ -48,13 +48,10 @@ previewDoc prevBody = do
     Just (Entity _ doc) ->
       -- yes, no accessCode doesn't mean no protection
       when (docInfoAccCode doc /= accessCode prevBody) $
-        throwError err403 { errBody = "Nope, try again." }
+        throwError err403 { errBody = "Access denied. Try again." }
   -- now, start rendering the markdown file (TODO lift to a Pandoc package)
   let md = markdown prevBody
-
-  let out = runPure $ do
-              pandoc <- readMarkdown def md
-              writeHtml5 def pandoc
+  out <- liftIO $ renderPreview md
   case out of
     Left err   -> throwError err400 { errBody = LB8.pack $ show err }
     Right html -> return $ preEscapedToMarkup html

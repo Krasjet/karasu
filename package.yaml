@@ -18,6 +18,7 @@ dependencies:
 - blaze-html
 - bytestring
 - directory
+- doctemplates
 - dotenv
 - filepath
 - monad-logger

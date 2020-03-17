@@ -72,5 +72,5 @@ createDoc docBody = do
   docDir <- asks envDocDir
   let mdFile = docDir </> dId <.> ".md"
   liftIO $ createDirectoryIfMissing True $ takeDirectory mdFile
-  liftIO $ TIO.writeFile mdFile $ T.pack $ "# " <> dId <> "\n"
+  liftIO $ TIO.writeFile mdFile $ T.pack $ "---\ntitle: " <> dId <> "\n---"
   return "The doc is up. Hooray!"

@@ -4,7 +4,7 @@ cabal-version: >=2.0
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 1c6146379423834387b558bd03ebccfc375815488f25cfa367445b5a4c94e74c
+-- hash: c09f0ffd457692af0c3349c28016c948186fea57a013b56eb67ed3df480eb53c
 
 name:           karasu
 version:        0.1.0.0
@@ -31,6 +31,8 @@ library
       Karasu.Handlers.ApiPreviewDoc
       Karasu.Handlers.Static
       Karasu.Models
+      Karasu.Pandoc.Options
+      Karasu.Pandoc.Renderer
       Karasu.Server
   other-modules:
       Paths_karasu
@@ -43,6 +45,7 @@ library
     , blaze-html
     , bytestring
     , directory
+    , doctemplates
     , dotenv
     , filepath
     , monad-logger
@@ -73,6 +76,7 @@ executable karasu
     , blaze-html
     , bytestring
     , directory
+    , doctemplates
     , dotenv
     , filepath
     , karasu
