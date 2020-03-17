@@ -15,9 +15,13 @@ import Text.Blaze.Html
 import Text.DocTemplates
 import Text.Pandoc
 
-renderPreview :: Text -> IO (Either PandocError Html)
+-- | Renders a preview HTML for markdown file.
+renderPreview
+  :: Text -- ^ the content of the markdown
+  -> IO (Either PandocError Html) -- ^ error or the final HTML
 renderPreview md = runIO $ do
   pandoc <- readMarkdown defKarasuReaderOptions md
+  -- load preview templates
   res <- liftIO $ compileTemplateFile $ "templates" </> "preview" <.> "html"
   case res of
     Left e -> throwError $ PandocTemplateError (T.pack e)

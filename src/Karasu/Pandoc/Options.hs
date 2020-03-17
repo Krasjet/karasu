@@ -1,4 +1,4 @@
--- | Pandoc options
+-- | Pandoc options (stole form Hakyll)
 module Karasu.Pandoc.Options (defKarasuReaderOptions, defKarasuWriterOptions) where
 
 import Text.Pandoc
