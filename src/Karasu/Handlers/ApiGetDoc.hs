@@ -16,7 +16,6 @@ import qualified Data.Text.IO as TIO
 import Control.Monad.IO.Class  (liftIO)
 import Control.Monad.Reader    (asks)
 import Data.Aeson
-import Database.Persist.Sqlite
 import GHC.Generics
 import Servant
 import System.FilePath         ((<.>), (</>))
@@ -38,7 +37,7 @@ type GetDocApi = "api"
 getDoc :: DocId -> KHandler GetDocRes
 getDoc docId = do
   -- we need first check the existence of document
-  (Entity _ doc) <- getDoc404WithMsg docId "Nothing here."
+  (_, doc) <- getDoc404WithMsg docId "Nothing here."
 
   -- also send the version string to let kamome know if we have updated
   let docVer = docInfoVersion doc

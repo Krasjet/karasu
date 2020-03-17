@@ -50,20 +50,20 @@ mkPool dbFile debug = do
 -- and custom message
 getDoc404WithMsg
   :: (MonadReader KarasuEnv m, MonadIO m, MonadError ServerError m)
-  => DocId              -- ^ the document id
-  -> ByteString         -- ^ the message
-  -> m (Entity DocInfo) -- ^ (docKey, docInfo)
+  => DocId                    -- ^ the document id
+  -> ByteString               -- ^ the message
+  -> m (Key DocInfo, DocInfo) -- ^ (docKey, docInfo)
 getDoc404WithMsg docId msg = do
   res <- runDb $ getBy $ UniqueDocId docId
   case res of
     Nothing -> throwError err404 { errBody = msg }
-    Just d  -> return d
+    Just (Entity docKey doc) -> return (docKey, doc)
 
 -- | A simple wrapper for retrieving documents using DocId with error handling
 getDoc404
   :: (MonadReader KarasuEnv m, MonadIO m, MonadError ServerError m)
-  => DocId              -- ^ the document id
-  -> m (Entity DocInfo) -- ^ (docKey, docInfo)
+  => DocId                    -- ^ the document id
+  -> m (Key DocInfo, DocInfo) -- ^ (docKey, docInfo)
 getDoc404 = flip getDoc404WithMsg "Something wrong with the docId."
 
 -- | Only check if the document exists or not. Raise 404 error if not.
@@ -76,15 +76,15 @@ docExists404 = void . flip getDoc404WithMsg "Nothing here."
 -- | getBy404 plus access code verification
 getDocWithValidation
   :: (MonadReader KarasuEnv m, MonadIO m, MonadError ServerError m)
-  => DocId              -- ^ the document id
-  -> Maybe AccessCode   -- ^ the access code
-  -> m (Entity DocInfo) -- ^ (docKey, docInfo)
+  => DocId                    -- ^ the document id
+  -> Maybe AccessCode         -- ^ the access code
+  -> m (Key DocInfo, DocInfo) -- ^ (docKey, docInfo)
 getDocWithValidation docId accCode = do
-  d@(Entity _ doc) <- getDoc404 docId
+  (docKey, doc) <- getDoc404 docId
   -- yes, no accessCode doesn't mean no protection
   when (docInfoAccCode doc /= accCode) $
     throwError err403 { errBody = "Access denied. Try again." }
-  return d
+  return (docKey, doc)
 
 -- | Only validate, ignore return value
 validateDoc
