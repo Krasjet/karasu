@@ -12,4 +12,4 @@ type KHandler = ReaderT KarasuEnv Handler
 
 -- the natural transformation KHandler ~> Handler
 nt :: KarasuEnv -> KHandler a -> Handler a
-nt env kHld = runReaderT kHld env
+nt env kHdl = runReaderT kHdl env
