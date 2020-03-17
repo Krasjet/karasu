@@ -1,5 +1,5 @@
 -- |
--- A few ultility functions to deal with runtime environments, i.e. a global
+-- A few utility functions to deal with runtime environments, i.e. a global
 -- state shared by all handlers
 module Karasu.Environment (KarasuEnv(..), lookupEnvVar, lookupEnvVarParse) where
 
@@ -24,7 +24,7 @@ data KarasuEnv
 -- | Obtain an environment variable and parse with default value
 lookupEnvVarParse
   :: Read a
-  => String -- ^ the environemnt variable
+  => String -- ^ the environment variable
   -> a      -- ^ the default value
   -> IO a
 lookupEnvVarParse envVar defVal = do
@@ -33,7 +33,7 @@ lookupEnvVarParse envVar defVal = do
 
 -- | Obtain an environment variable with default value
 lookupEnvVar
-  :: String -- ^ the environemnt variable
+  :: String -- ^ the environment variable
   -> String -- ^ the default value
   -> IO String
 lookupEnvVar envVar defVal = do

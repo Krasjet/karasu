@@ -7,12 +7,14 @@ module Karasu.Database
   , mkPool
   , getDoc404WithMsg
   , getDoc404
+  , docExists404
   , getDocWithValidation
   , validateDoc
   ) where
 
 import Karasu.Environment
 import Karasu.Models
+import Karasu.Utils
 
 import qualified Data.Text as T
 
@@ -24,8 +26,6 @@ import Control.Monad.Reader    (MonadReader, asks)
 import Data.ByteString.Lazy    (ByteString)
 import Database.Persist.Sqlite
 import Servant
-import System.Directory        (createDirectoryIfMissing)
-import System.FilePath         (takeDirectory)
 
 doMigrations :: SqlPersistT IO ()
 doMigrations = runMigration migrateAll
@@ -39,7 +39,7 @@ runDb query = do
 -- | Create databse pool
 mkPool :: FilePath -> Bool -> IO ConnectionPool
 mkPool dbFile debug = do
-  createDirectoryIfMissing True $ takeDirectory dbFile
+  createParentDir dbFile
   pool <- if debug
             then runStdoutLoggingT $ createSqlitePool (T.pack dbFile) 5
             else runNoLoggingT $ createSqlitePool (T.pack dbFile) 5
@@ -64,7 +64,14 @@ getDoc404
   :: (MonadReader KarasuEnv m, MonadIO m, MonadError ServerError m)
   => DocId              -- ^ the document id
   -> m (Entity DocInfo) -- ^ (docKey, docInfo)
-getDoc404 docId = getDoc404WithMsg docId "Something wrong with the docId."
+getDoc404 = flip getDoc404WithMsg "Something wrong with the docId."
+
+-- | Only check if the document exists or not. Raise 404 error if not.
+docExists404
+  :: (MonadReader KarasuEnv m, MonadIO m, MonadError ServerError m)
+  => DocId -- ^ the document id
+  -> m ()  -- ^ result ignored
+docExists404 = void . flip getDoc404WithMsg "Nothing here."
 
 -- | getBy404 plus access code verification
 getDocWithValidation
@@ -85,4 +92,4 @@ validateDoc
   => DocId            -- ^ the document id
   -> Maybe AccessCode -- ^ the access code
   -> m ()             -- ^ result ignored
-validateDoc docId accCode = void $ getDocWithValidation docId accCode
+validateDoc = (void .) . getDocWithValidation

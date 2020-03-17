@@ -38,13 +38,14 @@ type GetDocApi = "api"
 getDoc :: DocId -> KHandler GetDocRes
 getDoc docId = do
   -- we need first check the existence of document
-  res <- runDb $ getBy $ UniqueDocId docId
-  case res of
-    Nothing -> throwError err404 { errBody = "Nothing here." }
-    Just (Entity _ doc) -> do
-      -- also send the version string to let kamome know if we have updated
-      let docVer = docInfoVersion doc
-      docDir <- asks envDocDir
-      let mdFile = docDir </> docId <.> ".md"
-      md <- liftIO $ TIO.readFile mdFile
-      return $ GetDocRes md docVer
+  (Entity _ doc) <- getDoc404WithMsg docId "Nothing here."
+
+  -- also send the version string to let kamome know if we have updated
+  let docVer = docInfoVersion doc
+
+  -- read the markdown file (NOTE change to database storage?)
+  docDir <- asks envDocDir
+  let mdFile = docDir </> docId <.> ".md"
+  md <- liftIO $ TIO.readFile mdFile
+
+  return $ GetDocRes md docVer

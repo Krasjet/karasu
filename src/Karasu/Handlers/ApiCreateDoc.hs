@@ -10,9 +10,9 @@ import Karasu.Database
 import Karasu.Environment
 import Karasu.Handler
 import Karasu.Models
+import Karasu.Utils
 
-import qualified Data.Text    as T
-import qualified Data.Text.IO as TIO
+import qualified Data.Text as T
 
 import Control.Monad           (unless, when)
 import Control.Monad.IO.Class  (liftIO)
@@ -24,9 +24,7 @@ import Data.Text               (Text)
 import Database.Persist.Sqlite
 import GHC.Generics
 import Servant
-import System.Directory        (createDirectoryIfMissing)
-import System.FilePath         (isPathSeparator, isValid, takeDirectory, (<.>),
-                                (</>))
+import System.FilePath         (isPathSeparator, isValid, (<.>), (</>))
 
 data CreateDocBody = CreateDocBody {
   docId      :: DocId,
@@ -63,7 +61,8 @@ createDoc docBody = do
     throwError err400 { errBody = "Can you read the document id?" }
 
   -- finally insert the document
-  res <- runDb $ insertUnique $ DocInfo (docId docBody) (accessCode docBody) 1
+  res <- runDb $ insertUnique $
+    DocInfo (docId docBody) (accessCode docBody) 1
   -- the docId already exists
   when (isNothing res) $
     throwError err409 { errBody = "Something is already there." }
@@ -71,6 +70,7 @@ createDoc docBody = do
   -- write default markdown file
   docDir <- asks envDocDir
   let mdFile = docDir </> dId <.> ".md"
-  liftIO $ createDirectoryIfMissing True $ takeDirectory mdFile
-  liftIO $ TIO.writeFile mdFile $ T.pack $ "---\ntitle: " <> dId <> "\n---"
+  let defaultTxt = T.pack $ "---\ntitle: " <> dId <> "\n---"
+  liftIO $ writeFileHandleMissing mdFile defaultTxt
+
   return "The doc is up. Hooray!"

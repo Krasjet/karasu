@@ -13,10 +13,8 @@ import Karasu.Pandoc.Renderer
 
 import qualified Data.ByteString.Lazy.Char8 as LB8
 
-import Control.Monad           (when)
 import Control.Monad.IO.Class  (liftIO)
 import Data.Aeson
-import Database.Persist.Sqlite
 import GHC.Generics
 import Servant
 import Servant.HTML.Blaze
@@ -39,19 +37,12 @@ type PreviewDocApi = "api"
 -- | Process markdown and send preview
 previewDoc :: PreviewDocBody ->  KHandler Html
 previewDoc prevBody = do
-  liftIO $ print prevBody
-  let dId = docId prevBody
-  -- check access code
-  res <- runDb $ getBy $ UniqueDocId dId
-  case res of
-    Nothing -> throwError err403 { errBody = "Something wrong with the docId." }
-    Just (Entity _ doc) ->
-      -- yes, no accessCode doesn't mean no protection
-      when (docInfoAccCode doc /= accessCode prevBody) $
-        throwError err403 { errBody = "Access denied. Try again." }
-  -- now, start rendering the markdown file (TODO lift to a Pandoc package)
+  -- first validate the access code
+  validateDoc (docId prevBody) (accessCode prevBody)
+
+  -- render the markdown file
   let md = markdown prevBody
   out <- liftIO $ renderPreview md
   case out of
     Left err   -> throwError err400 { errBody = LB8.pack $ show err }
-    Right html -> return $ preEscapedToMarkup html
+    Right html -> return html

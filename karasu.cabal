@@ -4,7 +4,7 @@ cabal-version: >=2.0
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: c09f0ffd457692af0c3349c28016c948186fea57a013b56eb67ed3df480eb53c
+-- hash: a7dddb5a256533104aa94df2997705607de199b935776ee95189053b313b77eb
 
 name:           karasu
 version:        0.1.0.0
@@ -29,6 +29,7 @@ library
       Karasu.Handlers.ApiEditDoc
       Karasu.Handlers.ApiGetDoc
       Karasu.Handlers.ApiPreviewDoc
+      Karasu.Handlers.ApiSaveDoc
       Karasu.Handlers.Static
       Karasu.Models
       Karasu.Pandoc.Options
