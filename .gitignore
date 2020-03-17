@@ -1,0 +1,8 @@
+.stack-work/
+db/
+docs/
+.env
+static
+design
+stack.yaml.lock
+

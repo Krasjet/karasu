@@ -1,0 +1,92 @@
+cabal-version: >=2.0
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 1c6146379423834387b558bd03ebccfc375815488f25cfa367445b5a4c94e74c
+
+name:           karasu
+version:        0.1.0.0
+description:    A work in progress.
+category:       Web
+author:         Krasjet
+maintainer:     Krasjet
+copyright:      Copyright (c) 2020 Krasjet
+license:        MIT
+build-type:     Simple
+extra-source-files:
+    README.md
+
+library
+  exposed-modules:
+      Karasu
+      Karasu.Api
+      Karasu.Database
+      Karasu.Environment
+      Karasu.Handler
+      Karasu.Handlers.ApiCreateDoc
+      Karasu.Handlers.ApiEditDoc
+      Karasu.Handlers.ApiGetDoc
+      Karasu.Handlers.ApiPreviewDoc
+      Karasu.Handlers.Static
+      Karasu.Models
+      Karasu.Server
+  other-modules:
+      Paths_karasu
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Werror
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , blaze-html
+    , bytestring
+    , directory
+    , dotenv
+    , filepath
+    , monad-logger
+    , mtl
+    , pandoc >=2.7 && <2.10
+    , persistent-sqlite
+    , persistent-template
+    , servant
+    , servant-blaze
+    , servant-server
+    , text
+    , transformers
+    , wai
+    , wai-extra
+    , warp
+  default-language: Haskell2010
+
+executable karasu
+  main-is: Main.hs
+  other-modules:
+      Paths_karasu
+  hs-source-dirs:
+      app
+  ghc-options: -Wall -Werror -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , blaze-html
+    , bytestring
+    , directory
+    , dotenv
+    , filepath
+    , karasu
+    , monad-logger
+    , mtl
+    , pandoc >=2.7 && <2.10
+    , persistent-sqlite
+    , persistent-template
+    , servant
+    , servant-blaze
+    , servant-server
+    , text
+    , transformers
+    , wai
+    , wai-extra
+    , warp
+  default-language: Haskell2010
