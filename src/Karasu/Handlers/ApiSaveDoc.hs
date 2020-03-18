@@ -8,14 +8,14 @@
 module Karasu.Handlers.ApiSaveDoc (SaveDocApi, saveDoc) where
 
 import Karasu.Database
-import Karasu.Pandoc
 import Karasu.Handler
 import Karasu.Models
+import Karasu.Pandoc
 import Karasu.Utils
 
-import qualified Crypto.Hash.SHA1           as SHA1
-import qualified Data.ByteString.Base16     as Base16
-import qualified Data.Text                  as T
+import qualified Crypto.Hash.SHA1       as SHA1
+import qualified Data.ByteString.Base16 as Base16
+import qualified Data.Text              as T
 
 import Control.Monad           (when)
 import Control.Monad.Except    (MonadError)
