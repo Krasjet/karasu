@@ -63,9 +63,11 @@ backupMarkdown dId md ver = do
   writeFileHandleMissing filename md
 
 throwNewVerAvailable :: (MonadError ServerError m) => m ()
-throwNewVerAvailable = throwError err409 { errBody = "A newer version of the document is \
-    \available. The document is backed up on the server but not saved. Refresh \
-    \to retrieve the latest version" }
+throwNewVerAvailable = throwError err409 { errBody = "A newer version of the\
+  \ document is available. The document is backed up on the server but not\
+  \ saved. Copy everything in the editor to a file on your own computer and\
+  \ refresh to retrieve the latest version.\n\n\
+  \ Shoot me an email if you forget to back up your progress." }
 
 -- | Save the document to file
 saveDoc :: SaveDocBody -> KHandler SaveDocRes
