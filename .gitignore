@@ -1,7 +1,8 @@
 .stack-work/
 db/
 docs/
-view
+view/
+backup/
 .env
 static
 design

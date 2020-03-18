@@ -16,13 +16,14 @@ import Karasu.Utils
 import qualified Crypto.Hash.SHA1           as SHA1
 import qualified Data.ByteString.Base16     as Base16
 import qualified Data.ByteString.Lazy.Char8 as LB8
+import qualified Data.Text                  as T
 
 import Control.Monad           (when)
 import Control.Monad.Except    (MonadError)
 import Control.Monad.IO.Class  (liftIO)
 import Data.Aeson
 import Data.Text               (Text)
-import Data.Text.Encoding      (encodeUtf8)
+import Data.Text.Encoding      (decodeUtf8, encodeUtf8)
 import Database.Persist.Sqlite
 import GHC.Generics
 import Servant
@@ -59,7 +60,7 @@ backupMarkdown
 backupMarkdown dId md ver = do
   -- unique identifier for the markdown file
   let hash = Base16.encode $ SHA1.hash $ encodeUtf8 md
-  let filename = "backup" </> dId </> show ver <> "-" <> show hash <.> "md"
+  let filename = "backup" </> dId </> show ver <> "-" <> T.unpack (decodeUtf8 hash) <.> "md"
   writeFileHandleMissing filename md
 
 throwNewVerAvailable :: (MonadError ServerError m) => m ()

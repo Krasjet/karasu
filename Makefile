@@ -26,5 +26,6 @@ clean:
 	rm -rf ./db
 	rm -rf ./docs
 	rm -rf ./view
+	rm -rf ./backup
 	rm -rf ./kamome/dist/*
 
