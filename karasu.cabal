@@ -4,7 +4,7 @@ cabal-version: >=2.0
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 09b8f706c27629227cf6820d03d4c47133da727ae4c41998cb4bc8ff6463e75a
+-- hash: aa710f65fc63a2446133c6cc36f542ccccf89472fa429c5ffdd06df46c5e7c24
 
 name:           karasu
 version:        0.1.0.0
@@ -44,8 +44,10 @@ library
   build-depends:
       aeson
     , base >=4.7 && <5
+    , base16-bytestring
     , blaze-html
     , bytestring
+    , cryptohash-sha1
     , directory
     , doctemplates
     , dotenv
@@ -75,8 +77,10 @@ executable karasu
   build-depends:
       aeson
     , base >=4.7 && <5
+    , base16-bytestring
     , blaze-html
     , bytestring
+    , cryptohash-sha1
     , directory
     , doctemplates
     , dotenv

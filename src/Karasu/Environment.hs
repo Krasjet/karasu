@@ -1,5 +1,4 @@
--- |
--- A few utility functions to deal with runtime environments, i.e. a global
+-- | A few utility functions to deal with runtime environments, i.e. a global
 -- state shared by all handlers
 module Karasu.Environment (KarasuEnv(..), lookupEnvVar, lookupEnvVarParse) where
 

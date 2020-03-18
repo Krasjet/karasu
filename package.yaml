@@ -15,8 +15,10 @@ description: "A work in progress."
 dependencies:
 - base >= 4.7 && < 5
 - aeson
+- base16-bytestring
 - blaze-html
 - bytestring
+- cryptohash-sha1
 - directory
 - doctemplates
 - dotenv
