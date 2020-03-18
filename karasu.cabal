@@ -4,7 +4,7 @@ cabal-version: >=2.0
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 6b605b60a3ed2fae5252a4bbf21d52c4b30c99cb63504491953739d643506837
+-- hash: cbe86b1a87fb9c51c7ce1430cdb3bc5f1576152e9cbba66e9bef1025e25a836d
 
 name:           karasu
 version:        0.1.0.0
@@ -33,6 +33,7 @@ library
       Karasu.Handlers.Static
       Karasu.Handlers.ViewDoc
       Karasu.Models
+      Karasu.Pandoc
       Karasu.Pandoc.Options
       Karasu.Pandoc.Renderer
       Karasu.Server

@@ -10,10 +10,11 @@ import Karasu.Database
 import Karasu.Environment
 import Karasu.Handler
 import Karasu.Models
+import Karasu.Pandoc
 
 import qualified Data.Text as T
 
-import Control.Monad           (unless, when)
+import Control.Monad           (unless, when, void)
 import Control.Monad.Reader    (asks)
 import Data.Aeson
 import Data.Char               (isAlphaNum)
@@ -65,5 +66,8 @@ createDoc docBody = do
   -- the docId already exist
   when (isNothing res) $
     throwError err409 { errBody = "Something is already there." }
+
+  -- save the default markdown preview to file
+  void $ renderSaveMarkdownPreview dId defaultTxt
 
   return "The doc is up. Hooray!"

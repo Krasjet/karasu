@@ -8,14 +8,13 @@
 module Karasu.Handlers.ApiSaveDoc (SaveDocApi, saveDoc) where
 
 import Karasu.Database
+import Karasu.Pandoc
 import Karasu.Handler
 import Karasu.Models
-import Karasu.Pandoc.Renderer
 import Karasu.Utils
 
 import qualified Crypto.Hash.SHA1           as SHA1
 import qualified Data.ByteString.Base16     as Base16
-import qualified Data.ByteString.Lazy.Char8 as LB8
 import qualified Data.Text                  as T
 
 import Control.Monad           (when)
@@ -92,13 +91,7 @@ saveDoc saveBody = do
 
   -- actually update the document (atomic)
   res <- runDb $ updateGet docKey [ DocInfoVersion +=. 1, DocInfoText =. md ]
-
-  -- now, start rendering the markdown file
-  out <- liftIO $ renderPreviewText md
-  case out of
-    Left err -> throwError err400 { errBody = LB8.pack $ show err }
-    Right h  -> do
-      let htmlFile = "view" </> dId </> "index" <.> "html"
-      liftIO $ writeFileHandleMissing htmlFile h
-      return $ SaveDocRes (docInfoVersion res) h
+  -- save the rendered markdown to file
+  h <- renderSaveMarkdownPreview dId md
+  return $ SaveDocRes (docInfoVersion res) h
   -- TODO protect with MVar/TVar
