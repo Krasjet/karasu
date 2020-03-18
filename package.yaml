@@ -35,6 +35,7 @@ dependencies:
 - transformers
 - wai
 - wai-extra
+- wai-app-static
 - warp
 
 ghc-options:

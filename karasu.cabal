@@ -4,7 +4,7 @@ cabal-version: >=2.0
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: aa710f65fc63a2446133c6cc36f542ccccf89472fa429c5ffdd06df46c5e7c24
+-- hash: 6b605b60a3ed2fae5252a4bbf21d52c4b30c99cb63504491953739d643506837
 
 name:           karasu
 version:        0.1.0.0
@@ -31,6 +31,7 @@ library
       Karasu.Handlers.ApiPreviewDoc
       Karasu.Handlers.ApiSaveDoc
       Karasu.Handlers.Static
+      Karasu.Handlers.ViewDoc
       Karasu.Models
       Karasu.Pandoc.Options
       Karasu.Pandoc.Renderer
@@ -63,6 +64,7 @@ library
     , text
     , transformers
     , wai
+    , wai-app-static
     , wai-extra
     , warp
   default-language: Haskell2010
@@ -97,6 +99,7 @@ executable karasu
     , text
     , transformers
     , wai
+    , wai-app-static
     , wai-extra
     , warp
   default-language: Haskell2010

@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 -- | All the server related stuff
 module Karasu.Server (karasuServer, staticServer, apiServer) where
 
@@ -7,17 +9,40 @@ import Karasu.Handler
 import Karasu.Handlers.ApiCreateDoc
 import Karasu.Handlers.ApiEditDoc
 import Karasu.Handlers.ApiGetDoc
-import Karasu.Handlers.ApiSaveDoc
 import Karasu.Handlers.ApiPreviewDoc
+import Karasu.Handlers.ApiSaveDoc
 import Karasu.Handlers.Static
+import Karasu.Handlers.ViewDoc
+import Network.Wai.Application.Static
+import WaiAppStatic.Types
 
 import Servant
 
--- * Static server, which serves all the static files
-staticServer :: Server StaticFiles
-staticServer = serveDirectoryWebApp "static"
+-- | settings for static server
+staticSettings :: FilePath -> StaticSettings
+staticSettings root = (defaultWebAppSettings root)
+  {
+    ssIndices = map unsafeToPiece ["index.html", "index.htm"]
+  , ssRedirectToIndex = True
+  , ssAddTrailingSlash = True
+  }
 
--- * API server, which serves all APIs, of course
+-- | settings for view server
+viewSettings :: FilePath -> StaticSettings
+viewSettings root = (staticSettings root) { ssMaxAge = NoMaxAge }
+
+-- * Static server
+-- | which serves all the static files
+staticServer :: Server StaticFiles
+staticServer = serveDirectoryWith $ staticSettings "static/"
+
+-- * View server
+-- | which serves compiled documents
+viewServer :: Server ViewDoc
+viewServer = serveDirectoryWith $ viewSettings "view/"
+
+-- * API server
+-- which serves all APIs, of course
 
 -- | API server with KHandler wrapper
 --   We will need to use hoistServer to apply the
@@ -31,4 +56,4 @@ apiServer env = hoistServer reqApi (nt env) apiServerK
 
 -- * Combined server
 karasuServer :: KarasuEnv -> Server KarasuApi
-karasuServer env = apiServer env :<|> staticServer
+karasuServer env = apiServer env :<|> viewServer :<|> staticServer
