@@ -43,12 +43,10 @@ loadEnv = do
   port   <- lookupEnvVarParse "KARASU_PORT" 8080
   dbFile <- lookupEnvVar "KARASU_DB" $ "db" </> "karasu.db"
   masterPass <- lookupEnvVar "KARASU_MASTERPASS" "karasu"
-  docDir <- lookupEnvVar "KARASU_DOCDIR" "docs"
   pool   <- mkPool dbFile debug
   return KarasuEnv
     { envDebug  = debug
     , envPort   = port
     , envPool   = pool
     , envMaster = T.pack masterPass
-    , envDocDir = docDir
     }

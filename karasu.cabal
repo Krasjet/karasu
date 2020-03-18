@@ -4,7 +4,7 @@ cabal-version: >=2.0
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: a7dddb5a256533104aa94df2997705607de199b935776ee95189053b313b77eb
+-- hash: 09b8f706c27629227cf6820d03d4c47133da727ae4c41998cb4bc8ff6463e75a
 
 name:           karasu
 version:        0.1.0.0
@@ -35,6 +35,7 @@ library
       Karasu.Pandoc.Options
       Karasu.Pandoc.Renderer
       Karasu.Server
+      Karasu.Utils
   other-modules:
       Paths_karasu
   hs-source-dirs:

@@ -18,7 +18,6 @@ data KarasuEnv
     , envPool   :: ConnectionPool -- connection pool for database
     , envPort   :: Port           -- port number of the server
     , envMaster :: MasterPassword -- master password for creating documents (TODO encryption)
-    , envDocDir :: FilePath       -- directory storing markdown files
     }
 
 -- | Obtain an environment variable and parse with default value

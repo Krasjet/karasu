@@ -7,18 +7,12 @@
 module Karasu.Handlers.ApiGetDoc (GetDocApi, getDoc) where
 
 import Karasu.Database
-import Karasu.Environment
 import Karasu.Handler
 import Karasu.Models
 
-import qualified Data.Text.IO as TIO
-
-import Control.Monad.IO.Class  (liftIO)
-import Control.Monad.Reader    (asks)
 import Data.Aeson
 import GHC.Generics
 import Servant
-import System.FilePath         ((<.>), (</>))
 
 data GetDocRes = GetDocRes {
   markdown :: Markdown,
@@ -41,10 +35,7 @@ getDoc docId = do
 
   -- also send the version string to let kamome know if we have updated
   let docVer = docInfoVersion doc
-
-  -- read the markdown file (NOTE change to database storage?)
-  docDir <- asks envDocDir
-  let mdFile = docDir </> docId <.> ".md"
-  md <- liftIO $ TIO.readFile mdFile
+  -- read the markdown file
+  let md = docInfoText doc
 
   return $ GetDocRes md docVer

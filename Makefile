@@ -25,5 +25,6 @@ ghci:
 clean:
 	rm -rf ./db
 	rm -rf ./docs
+	rm -rf ./view
 	rm -rf ./kamome/dist/*
 

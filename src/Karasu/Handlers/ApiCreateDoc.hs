@@ -10,12 +10,10 @@ import Karasu.Database
 import Karasu.Environment
 import Karasu.Handler
 import Karasu.Models
-import Karasu.Utils
 
 import qualified Data.Text as T
 
 import Control.Monad           (unless, when)
-import Control.Monad.IO.Class  (liftIO)
 import Control.Monad.Reader    (asks)
 import Data.Aeson
 import Data.Char               (isAlphaNum)
@@ -24,7 +22,7 @@ import Data.Text               (Text)
 import Database.Persist.Sqlite
 import GHC.Generics
 import Servant
-import System.FilePath         (isPathSeparator, isValid, (<.>), (</>))
+import System.FilePath         (isPathSeparator, isValid)
 
 data CreateDocBody = CreateDocBody {
   docId      :: DocId,
@@ -40,7 +38,7 @@ type CreateDocApi = "api"
                  :> ReqBody '[JSON] CreateDocBody
                  :> PostCreated '[PlainText] Text
 
--- | Validate the docId
+-- | Validate the docId, since we later need to back it up as file
 -- 1. valid path (empty string should fail here)
 -- 2. not containing any path separator
 -- 3. start with alphanumeric
@@ -58,19 +56,14 @@ createDoc docBody = do
   let dId = docId docBody
   -- docId not valid filename
   unless (validId dId) $
-    throwError err400 { errBody = "Can you read the document id?" }
+    throwError err400 { errBody = "Can you read the document id? I can't." }
 
   -- finally insert the document
-  res <- runDb $ insertUnique $
-    DocInfo (docId docBody) (accessCode docBody) 1
-  -- the docId already exists
+  let defaultTxt = T.pack $ "---\ntitle: " <> dId <> "\n---\n\n"
+  res <- runDb $ insertUnique $ DocInfo dId (accessCode docBody) 1 defaultTxt
+
+  -- the docId already exist
   when (isNothing res) $
     throwError err409 { errBody = "Something is already there." }
-
-  -- write default markdown file
-  docDir <- asks envDocDir
-  let mdFile = docDir </> dId <.> ".md"
-  let defaultTxt = T.pack $ "---\ntitle: " <> dId <> "\n---"
-  liftIO $ writeFileHandleMissing mdFile defaultTxt
 
   return "The doc is up. Hooray!"

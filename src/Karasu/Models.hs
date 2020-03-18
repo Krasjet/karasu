@@ -25,6 +25,7 @@ DocInfo
   docId DocId
   accCode AccessCode Maybe
   version  Version
+  text  Markdown
   UniqueDocId docId
   deriving Show Eq
 |]
