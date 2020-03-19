@@ -3,6 +3,8 @@
 -- | A pandoc filter to transform capital letters into small caps
 module Karasu.Pandoc.Filters.SmcpFilter (smcpFilter) where
 
+import Karasu.Pandoc.Filters.Utils
+
 import qualified Data.Text as T
 
 import Data.Char   (isUpper)
@@ -21,12 +23,15 @@ capStr str
   | otherwise = Str str
 
 -- | Convert capital letters to smallcaps
-smcpFilter :: Inline -> [Inline]
-smcpFilter (Str str) =
+smcpFilter' :: Inline -> [Inline]
+smcpFilter' (Str str) =
   map capStr $
   -- group the elements to save some space
   T.groupBy bothCap str
     where
       bothCap x y = isSmcp x == isSmcp y
 -- retain everything else
-smcpFilter x = [x]
+smcpFilter' x = [x]
+
+smcpFilter :: PandocFilterIO
+smcpFilter = toPandocFilterIO smcpFilter'

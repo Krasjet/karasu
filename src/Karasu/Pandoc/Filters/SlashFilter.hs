@@ -3,6 +3,8 @@
 -- | A pandoc filter that adds a soft word break (<wbr>) after '/'
 module Karasu.Pandoc.Filters.SlashFilter (slashFilter) where
 
+import Karasu.Pandoc.Filters.Utils
+
 import qualified Data.Text as T
 
 import Data.List.Split (dropBlanks, onSublist, split)
@@ -15,7 +17,10 @@ appendBreak "/" acc = Str "/" : RawInline (Format "html") "<wbr>" : acc
 appendBreak x   acc = Str (T.pack x) : acc
 
 -- | Add a soft word break (<wbr>) after '/'
-slashFilter :: Inline -> [Inline]
-slashFilter (Str str) = foldr appendBreak [] $
+slashFilter' :: Inline -> [Inline]
+slashFilter' (Str str) = foldr appendBreak [] $
                         split (dropBlanks $ onSublist "/") $ T.unpack str
-slashFilter x = [x]
+slashFilter' x = [x]
+
+slashFilter :: PandocFilterIO
+slashFilter = toPandocFilterIO slashFilter'

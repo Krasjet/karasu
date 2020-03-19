@@ -3,6 +3,8 @@
 -- | A pandoc filter that prevents orphaned em dashes
 module Karasu.Pandoc.Filters.DashFilter (dashFilter) where
 
+import Karasu.Pandoc.Filters.Utils
+
 import qualified Data.Text as T
 
 import Data.List.Split (dropBlanks, onSublist, split)
@@ -20,7 +22,10 @@ appendNoWrap (x : xs) = Str (T.pack x) : appendNoWrap xs
 appendNoWrap [] = []
 
 -- | Do not break em dashes!
-dashFilter :: Inline -> [Inline]
-dashFilter (Str str) = appendNoWrap $
+dashFilter' :: Inline -> [Inline]
+dashFilter' (Str str) = appendNoWrap $
                        split (dropBlanks $ onSublist emDash) $ T.unpack str
-dashFilter x = [x]
+dashFilter' x = [x]
+
+dashFilter :: PandocFilterIO
+dashFilter = toPandocFilterIO dashFilter'

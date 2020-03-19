@@ -1,9 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 -- | The renderer for markdown -> html conversion
-module Karasu.Pandoc.Renderer (renderPreviewHtml, renderPreviewText) where
+module Karasu.Pandoc.Renderer (renderPreview, renderDisplay) where
 
 import Karasu.Pandoc.Options
+import Karasu.Pandoc.Filters
 
 import qualified Data.Text as T
 
@@ -15,24 +16,27 @@ import Text.Blaze.Html
 import Text.DocTemplates
 import Text.Pandoc
 
--- | Renders a preview HTML for markdown file.
-renderPreviewHtml
+-- | Render a preview HTML from markdown file.
+renderPreview
   :: Text                         -- ^ content of the markdown
   -> IO (Either PandocError Html) -- ^ error or the final HTML
-renderPreviewHtml = renderPreviewWith writeHtml5
+renderPreview = renderWith writeHtml5 functionalFilters
 
--- | Renders a preview HTML text for markdown file.
-renderPreviewText
+-- | Render the final html for saving from markdown file.
+renderDisplay
   :: Text                         -- ^ content of the markdown
   -> IO (Either PandocError Text) -- ^ error or the final text
-renderPreviewText = renderPreviewWith writeHtml5String
+renderDisplay = renderWith writeHtml5String (functionalFilters <> cosmeticFilters)
 
-renderPreviewWith
+renderWith
   :: (WriterOptions -> Pandoc -> PandocIO a) -- ^ writer
+  -> [PandocFilterIO]                        -- ^ a list of pandoc filters
   -> Text                                    -- ^ content of the markdown
   -> IO (Either PandocError a)               -- ^ error or the final HTML
-renderPreviewWith writer md = runIO $ do
-  pandoc <- readMarkdown defKarasuReaderOptions md
+renderWith writer fs md = runIO $ do
+  pandoc' <- readMarkdown defKarasuReaderOptions md
+  -- apply filters
+  pandoc <- applyPandocFiltersIO fs pandoc'
   -- load preview templates
   res <- liftIO $ compileTemplateFile $ "templates" </> "preview" <.> "html"
   case res of

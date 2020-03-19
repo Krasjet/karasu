@@ -4,6 +4,8 @@
 -- specifically for Garibaldi
 module Karasu.Pandoc.Filters.KernFilter (kernFilter) where
 
+import Karasu.Pandoc.Filters.Utils
+
 import qualified Data.Map  as Map
 import qualified Data.Text as T
 
@@ -45,7 +47,10 @@ appendKern curr@[ch] acc@(Span _ [Str n] : _)
 appendKern curr acc = Str (T.pack curr) : acc
 
 -- | Add manual kerning to some letter pairs
-kernFilter :: Inline -> [Inline]
-kernFilter (Str str) = foldr appendKern [] $
+kernFilter' :: Inline -> [Inline]
+kernFilter' (Str str) = foldr appendKern [] $
                        split (dropBlanks $ oneOf kernPrefix) $ T.unpack str
-kernFilter x = [x]
+kernFilter' x = [x]
+
+kernFilter :: PandocFilterIO
+kernFilter = toPandocFilterIO kernFilter'

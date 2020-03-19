@@ -41,7 +41,7 @@ previewDoc prevBody = do
 
   -- render the markdown file
   let md = markdown prevBody
-  out <- liftIO $ renderPreviewHtml md
+  out <- liftIO $ renderPreview md
   case out of
     Left err   -> throwError err400 { errBody = LB8.pack $ show err }
     Right html -> return html
