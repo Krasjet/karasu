@@ -4,7 +4,7 @@ cabal-version: >=2.0
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: cbe86b1a87fb9c51c7ce1430cdb3bc5f1576152e9cbba66e9bef1025e25a836d
+-- hash: 8be08d84a8c6fc6b7308f0753404f019bcaef7cffc73d3339e6f9df8c52c52ea
 
 name:           karasu
 version:        0.1.0.0
@@ -34,6 +34,9 @@ library
       Karasu.Handlers.ViewDoc
       Karasu.Models
       Karasu.Pandoc
+      Karasu.Pandoc.Filters
+      Karasu.Pandoc.Filters.SlashFilter
+      Karasu.Pandoc.Filters.SmcpFilter
       Karasu.Pandoc.Options
       Karasu.Pandoc.Renderer
       Karasu.Server
@@ -57,11 +60,13 @@ library
     , monad-logger
     , mtl
     , pandoc >=2.7 && <2.10
+    , pandoc-types >=1.20 && <2
     , persistent-sqlite
     , persistent-template
     , servant
     , servant-blaze
     , servant-server
+    , split
     , text
     , transformers
     , wai
@@ -92,11 +97,13 @@ executable karasu
     , monad-logger
     , mtl
     , pandoc >=2.7 && <2.10
+    , pandoc-types >=1.20 && <2
     , persistent-sqlite
     , persistent-template
     , servant
     , servant-blaze
     , servant-server
+    , split
     , text
     , transformers
     , wai
