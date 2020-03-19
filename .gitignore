@@ -6,5 +6,6 @@ backup/
 .env
 static
 design
+deploy.sh
 stack.yaml.lock
 
