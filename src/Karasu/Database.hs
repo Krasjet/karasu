@@ -37,12 +37,12 @@ runDb query = do
   liftIO $ runSqlPool query pool
 
 -- | Create databse pool
-mkPool :: FilePath -> Bool -> IO ConnectionPool
-mkPool dbFile debug = do
+mkPool :: FilePath -> Bool -> Int -> IO ConnectionPool
+mkPool dbFile debug poolSize = do
   createParentDir dbFile
   pool <- if debug
-            then runStdoutLoggingT $ createSqlitePool (T.pack dbFile) 5
-            else runNoLoggingT $ createSqlitePool (T.pack dbFile) 5
+            then runStdoutLoggingT $ createSqlitePool (T.pack dbFile) poolSize
+            else runNoLoggingT $ createSqlitePool (T.pack dbFile) poolSize
   runSqlPool doMigrations pool
   return pool
 

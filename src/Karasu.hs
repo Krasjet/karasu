@@ -42,8 +42,9 @@ loadEnv = do
   debug  <- lookupEnvVarParse "KARASU_DEBUG" False
   port   <- lookupEnvVarParse "KARASU_PORT" 8080
   dbFile <- lookupEnvVar "KARASU_DB" $ "db" </> "karasu.db"
+  poolSize <- lookupEnvVarParse "KARASU_POOL_SIZE" 5
   masterPass <- lookupEnvVar "KARASU_MASTERPASS" "karasu"
-  pool   <- mkPool dbFile debug
+  pool   <- mkPool dbFile debug poolSize
   return KarasuEnv
     { envDebug  = debug
     , envPort   = port
