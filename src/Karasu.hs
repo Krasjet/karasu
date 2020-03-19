@@ -8,10 +8,11 @@ import Karasu.Server
 import qualified Data.Text as T
 
 import Configuration.Dotenv                 (defaultConfig, loadFile)
-import Control.Monad                        (void)
+import Control.Monad                        (void, when)
 import Network.Wai.Handler.Warp
 import Network.Wai.Middleware.RequestLogger (logStdout)
 import Servant
+import System.Directory                     (doesFileExist)
 import System.FilePath.Posix                ((</>))
 
 -- * application
@@ -38,7 +39,10 @@ runKarasu = do
 -- | Load runtime environments
 loadEnv :: IO KarasuEnv
 loadEnv = do
-  void $ loadFile defaultConfig
+  -- load dotenv file if exists
+  dotEnvExists <- doesFileExist ".env"
+  when dotEnvExists $
+    void $ loadFile defaultConfig
   debug  <- lookupEnvVarParse "KARASU_DEBUG" False
   port   <- lookupEnvVarParse "KARASU_PORT" 8080
   dbFile <- lookupEnvVar "KARASU_DB" $ "db" </> "karasu.db"
