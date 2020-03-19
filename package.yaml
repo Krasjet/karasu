@@ -18,6 +18,7 @@ dependencies:
 - base16-bytestring
 - blaze-html
 - bytestring
+- containers
 - cryptohash-sha1
 - directory
 - doctemplates
