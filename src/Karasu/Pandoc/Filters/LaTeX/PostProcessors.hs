@@ -85,8 +85,13 @@ getBaseline' sfx = case P.parse parser "<input>" sfx of
 -- | Alter the SVG image to include baseline correction
 applyBaselineCorrection :: SVG -> SVG
 applyBaselineCorrection xml =
-  [fmt|{pfx} style='vertical-align: {baseline:.6}pt' {sfx}|]
+  [fmt|{pfx} style='vertical-align: {baseline:.6}pt' {sfx'}|]
     where
       (_, svg)   = spanL "<svg" xml
       (pfx, sfx) = spanL viewboxMarker svg
       baseline   = getBaseline' sfx
+      -- we will remove the annoying id as well
+      (preG, gTag) = spanL "<g " sfx
+      (_, postG) = spanR '>' gTag
+      sfx' = preG <> "<g>" <> postG
+
