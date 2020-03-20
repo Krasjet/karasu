@@ -50,10 +50,10 @@ data LaTeXEnvOptions = LaTeXEnvOptions
   deriving (Eq, Show, Read, Ord)
 
 displaymath :: LaTeXEnvOptions
-displaymath = LaTeXEnvOptions [kfmt|\
+displaymath = LaTeXEnvOptions "displaymath" [kfmt|\
 \\usepackage{amsmath}
 \\usepackage{amsfonts}\
-|] "displaymath"
+|]
 
 math :: LaTeXEnvOptions
 math = displaymath { environment = "math" }

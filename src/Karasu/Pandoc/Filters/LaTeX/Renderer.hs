@@ -6,7 +6,7 @@
 -- 2020 Krasjet, 2020 Oleg Grenrus, 2015-2019 Liam O'Connor
 
 -- | SVG Renderer for TeX strings inside a markdown file
-module Karasu.Pandoc.Filters.LaTeX.Renderer (mkTeXDoc, compileSVG) where
+module Karasu.Pandoc.Filters.LaTeX.Renderer (mkTeXDoc, mkMathTeXDoc, compileSVG) where
 
 import Karasu.Pandoc.Filters.LaTeX.Definitions
 import Karasu.Pandoc.Filters.LaTeX.Quote
@@ -21,6 +21,7 @@ import Control.Monad.Trans.Except (ExceptT (..), runExceptT, throwE,
                                    withExceptT)
 import System.Exit                (ExitCode (..))
 import System.FilePath            ((<.>), (</>))
+import Text.Pandoc.Definition     (MathType (..))
 
 -- | Make latex document for options
 mkTeXDoc
@@ -36,13 +37,28 @@ mkTeXDoc envOpts texString = LT.pack [kfmt|\
 \\renewcommand{\\rmdefault}{zpltlf}
 \\usepackage{newpxmath}
 \\usepackage[scr=rsfso, cal=pxtx, bb=ams, frak=pxtx]{mathalfa}
-<environment envOpts>
+<preamble envOpts>
 \\begin{document}
 \\begin{preview}
-<texString>
+<texString>\
 \\end{preview}
 \\end{document}
-\\end{document}
+|]
+
+-- | Make math latex document for options
+mkMathTeXDoc
+  :: MathType        -- ^ environment and preamble
+  -> TeXString       -- ^ tex string to be rendered
+  -> TeXDoc          -- ^ output TeX document
+mkMathTeXDoc InlineMath texStr = mkTeXDoc math [kfmt|\
+\\begin{math}
+<texStr>
+\\end{math}
+|]
+mkMathTeXDoc DisplayMath texStr = mkTeXDoc displaymath [kfmt|\
+\\begin{displaymath}
+<texStr>
+\\end{displaymath}
 |]
 
 -- | The temp directory for compiling tex file
@@ -80,7 +96,7 @@ cached cacheDir texDoc action = do
 
 -- | Convert a tex string into a SVG image.
 compileSVG
-  :: String          -- cache directory for svg files
+  :: FilePath          -- cache directory for svg files
   -> TeXDoc        -- the tex string to be compiled
   -> IO (Either RenderError SVG)
 compileSVG cacheDir texDoc = runExceptT $

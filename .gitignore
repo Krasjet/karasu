@@ -3,6 +3,8 @@ db/
 docs/
 view/
 backup/
+cache/
+.tmp/
 .env
 static
 design

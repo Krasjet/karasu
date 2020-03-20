@@ -4,7 +4,7 @@
 -- 2020 Krasjet, 2020 Oleg Grenrus, 2015-2019 Liam O'Connor
 
 -- | For post-processing SVG files
-module Karasu.Pandoc.Filters.LaTeX.PostProcessor (getBaseline, applyBaselineCorrection) where
+module Karasu.Pandoc.Filters.LaTeX.PostProcessors (getBaseline, applyBaselineCorrection) where
 
 import Karasu.Pandoc.Filters.LaTeX.Definitions
 import Karasu.Pandoc.Filters.LaTeX.Utils

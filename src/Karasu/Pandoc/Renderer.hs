@@ -4,6 +4,7 @@
 module Karasu.Pandoc.Renderer (renderPreview, renderDisplay) where
 
 import Karasu.Pandoc.Options
+import Karasu.Models
 import Karasu.Pandoc.Filters
 
 import qualified Data.Text as T
@@ -18,15 +19,17 @@ import Text.Pandoc
 
 -- | Render a preview HTML from markdown file.
 renderPreview
-  :: Text                         -- ^ content of the markdown
+  :: DocId                        -- ^ document id
+  -> Text                         -- ^ content of the markdown file
   -> IO (Either PandocError Html) -- ^ error or the final HTML
-renderPreview = renderWith writeHtml5 functionalFilters
+renderPreview = renderWith writeHtml5 . functionalFilters
 
 -- | Render the final html for saving from markdown file.
 renderDisplay
-  :: Text                         -- ^ content of the markdown
+  :: DocId                        -- ^ document id
+  -> Text                         -- ^ content of the markdown file
   -> IO (Either PandocError Text) -- ^ error or the final text
-renderDisplay = renderWith writeHtml5String (functionalFilters <> cosmeticFilters)
+renderDisplay docId = renderWith writeHtml5String (functionalFilters docId <> cosmeticFilters)
 
 renderWith
   :: (WriterOptions -> Pandoc -> PandocIO a) -- ^ writer

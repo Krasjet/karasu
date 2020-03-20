@@ -120,9 +120,11 @@ writeFileHandleMissingS f t = do
 -- The chance of collision should be ignorable
 hashText :: LT.Text -> String
 hashText text =
-  show len <> filter (/= '=') (BS8.unpack $ Base64.encode t)
+  show len <> filter validHash (BS8.unpack $ Base64.encode t)
     where
       (t, len) = SHA256.hashlazyAndLength $ LT.encodeUtf8 text
+      validHash :: Char -> Bool
+      validHash c = c /= '=' && c /= '/'
 
 -- | The strict version of hash text
 hashText' :: T.Text -> String

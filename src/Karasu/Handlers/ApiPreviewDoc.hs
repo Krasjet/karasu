@@ -36,12 +36,13 @@ type PreviewDocApi = "api"
 -- | Process markdown and send preview
 previewDoc :: PreviewDocBody ->  KHandler Html
 previewDoc prevBody = do
+  let dId = docId prevBody
   -- first validate the access code
-  validateDoc (docId prevBody) (accessCode prevBody)
+  validateDoc dId (accessCode prevBody)
 
   -- render the markdown file
   let md = markdown prevBody
-  out <- liftIO $ renderPreview md
+  out <- liftIO $ renderPreview dId md
   case out of
     Left err   -> throwError err400 { errBody = LB8.pack $ show err }
     Right html -> return html

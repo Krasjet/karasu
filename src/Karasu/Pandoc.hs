@@ -24,7 +24,7 @@ renderSaveMarkdownPreview
   -> Markdown -- ^ the markdown document
   -> m Text   -- ^ rendered html
 renderSaveMarkdownPreview docId md = do
-  out <- liftIO $ renderDisplay md
+  out <- liftIO $ renderDisplay docId md
   case out of
     Left err -> throwError err400 { errBody = LB8.pack $ show err }
     Right h  -> do
