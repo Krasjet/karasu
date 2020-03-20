@@ -4,7 +4,7 @@
 -- 2020 Krasjet, 2020 Oleg Grenrus, 2015-2019 Liam O'Connor
 
 -- | For post-processing SVG files
-module Karasu.Pandoc.Filters.LaTeX.PostProcessors (getBaseline, applyBaselineCorrection) where
+module Karasu.Pandoc.Filters.LaTeX.PostProcessors (getBaseline, postProcessSVG) where
 
 import Karasu.Pandoc.Filters.LaTeX.Definitions
 import Karasu.Pandoc.Filters.LaTeX.Utils
@@ -83,8 +83,8 @@ getBaseline' sfx = case P.parse parser "<input>" sfx of
     lexeme p = p <* P.spaces
 
 -- | Alter the SVG image to include baseline correction
-applyBaselineCorrection :: SVG -> SVG
-applyBaselineCorrection xml =
+postProcessSVG :: SVG -> SVG
+postProcessSVG xml =
   [fmt|{pfx} style='vertical-align: {baseline:.6}pt' {sfx'}|]
     where
       (_, svg)   = spanL "<svg" xml

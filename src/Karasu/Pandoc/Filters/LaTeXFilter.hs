@@ -35,7 +35,7 @@ latexFilterInline' docId (Math mathType texStr) = do
   res <- compileSVG cacheDir texDoc
   case res of
     Left e    -> return $ displayError e
-    Right svg -> return $ RawInline (Format "html") $ T.pack $ applyBaselineCorrection svg
+    Right svg -> return $ RawInline (Format "html") $ T.pack $ postProcessSVG svg
 latexFilterInline' _ x = return x
 
 latexFilterInline :: DocId -> PandocFilterIO
