@@ -20,4 +20,8 @@ cosmeticFilters =
 
 -- | These filters are always applied
 functionalFilters :: DocId -> [PandocFilterIO]
-functionalFilters docId = [smcpFilter, latexFilterInline docId]
+functionalFilters docId =
+  [ latexFilterBlock docId
+  , latexFilterInline docId
+  , smcpFilter
+  ]

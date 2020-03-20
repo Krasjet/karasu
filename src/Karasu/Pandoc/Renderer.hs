@@ -41,6 +41,7 @@ renderWith writer fs md = runIO $ do
   -- apply filters
   pandoc <- applyPandocFiltersIO fs pandoc'
   -- load preview templates
+  -- TODO cache to memory instead
   res <- liftIO $ compileTemplateFile $ "templates" </> "preview" <.> "html"
   case res of
     Left e -> throwError $ PandocTemplateError (T.pack e)

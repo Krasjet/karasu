@@ -24,7 +24,7 @@ appendNoWrap [] = []
 -- | Do not break em dashes!
 dashFilter' :: Inline -> [Inline]
 dashFilter' (Str str) = appendNoWrap $
-                       split (dropBlanks $ onSublist emDash) $ T.unpack str
+  split (dropBlanks $ onSublist emDash) $ T.unpack str
 dashFilter' x = [x]
 
 dashFilter :: PandocFilterIO

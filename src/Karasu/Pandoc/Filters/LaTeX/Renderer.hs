@@ -9,6 +9,7 @@
 module Karasu.Pandoc.Filters.LaTeX.Renderer (mkTeXDoc, mkMathTeXDoc, compileSVG) where
 
 import Karasu.Pandoc.Filters.LaTeX.Definitions
+import Karasu.Pandoc.Filters.LaTeX.EnvOpts
 import Karasu.Pandoc.Filters.LaTeX.Quote
 import Karasu.Pandoc.Filters.LaTeX.Utils
 
@@ -25,10 +26,10 @@ import Text.Pandoc.Definition     (MathType (..))
 
 -- | Make latex document for options
 mkTeXDoc
-  :: LaTeXEnvOptions -- ^ environment and preamble
+  :: Preamble -- ^ environment and preamble
   -> TeXString       -- ^ tex string to be rendered
   -> TeXDoc          -- ^ output TeX document
-mkTeXDoc envOpts texString = LT.pack [kfmt|\
+mkTeXDoc preamble texString = LT.pack [kfmt|\
 \\nonstopmode
 \\documentclass[12pt]{article}
 \\usepackage[active,tightpage]{preview}
@@ -37,7 +38,7 @@ mkTeXDoc envOpts texString = LT.pack [kfmt|\
 \\renewcommand{\\rmdefault}{zpltlf}
 \\usepackage{newpxmath}
 \\usepackage[scr=rsfso, cal=pxtx, bb=ams, frak=pxtx]{mathalfa}
-<preamble envOpts>
+<preamble>
 \\begin{document}
 \\begin{preview}
 <texString>\
@@ -50,12 +51,12 @@ mkMathTeXDoc
   :: MathType        -- ^ environment and preamble
   -> TeXString       -- ^ tex string to be rendered
   -> TeXDoc          -- ^ output TeX document
-mkMathTeXDoc InlineMath texStr = mkTeXDoc math [kfmt|\
+mkMathTeXDoc InlineMath texStr = mkTeXDoc mathEnv [kfmt|\
 \\begin{math}
 <texStr>
 \\end{math}
 |]
-mkMathTeXDoc DisplayMath texStr = mkTeXDoc displaymath [kfmt|\
+mkMathTeXDoc DisplayMath texStr = mkTeXDoc mathEnv [kfmt|\
 \\begin{displaymath}
 <texStr>
 \\end{displaymath}

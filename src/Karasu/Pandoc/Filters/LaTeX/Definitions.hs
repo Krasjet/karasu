@@ -1,5 +1,3 @@
-{-# LANGUAGE QuasiQuotes #-}
-
 -- Heavily modified from https://github.com/phadej/latex-svg
 -- 2020 Krasjet, 2020 Oleg Grenrus, 2015-2019 Liam O'Connor
 
@@ -10,12 +8,7 @@ module Karasu.Pandoc.Filters.LaTeX.Definitions (
   BaseLine,
   SVG,
   RenderError(..),
-  LaTeXEnvOptions(..),
-  displaymath,
-  math
 ) where
-
-import Karasu.Pandoc.Filters.LaTeX.Quote
 
 import qualified Control.Exception as E
 import qualified Data.Text.Lazy    as LT
@@ -41,19 +34,3 @@ data RenderError
   | DVISVGMFailure String     -- ^ @dvisvgm@ returned a nonzero error code
   | IOException E.IOException -- ^ An 'IOException' occurred while managing the temporary files used to convert the equation
   deriving (Show, Eq)
-
--- | This allows us to give different environment different options
-data LaTeXEnvOptions = LaTeXEnvOptions
- { environment :: String -- ^ name of the LaTeX environment
- , preamble    :: String -- ^ The premble for the environment
- }
-  deriving (Eq, Show, Read, Ord)
-
-displaymath :: LaTeXEnvOptions
-displaymath = LaTeXEnvOptions "displaymath" [kfmt|\
-\\usepackage{amsmath}
-\\usepackage{amsfonts}\
-|]
-
-math :: LaTeXEnvOptions
-math = displaymath { environment = "math" }
