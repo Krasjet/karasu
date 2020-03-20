@@ -29,5 +29,5 @@ renderSaveMarkdownPreview docId md = do
     Left err -> throwError err400 { errBody = LB8.pack $ show err }
     Right h  -> do
       let htmlFile = "view" </> docId </> "index" <.> "html"
-      liftIO $ writeFileHandleMissing htmlFile h
+      liftIO $ writeFileHandleMissing' htmlFile h
       return h

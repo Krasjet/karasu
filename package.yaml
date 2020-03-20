@@ -15,11 +15,12 @@ description: "A work in progress."
 dependencies:
 - base >= 4.7 && < 5
 - aeson
-- base16-bytestring
+- base64-bytestring
 - blaze-html
 - bytestring
 - containers
-- cryptohash-sha1
+- cryptohash-sha256
+- deepseq
 - directory
 - doctemplates
 - dotenv
@@ -28,12 +29,16 @@ dependencies:
 - mtl
 - pandoc >= 2.7 && < 2.10
 - pandoc-types >= 1.20 && < 2
+- parsec
 - persistent-template
 - persistent-sqlite
+- process
+- PyF
 - servant
 - servant-server
 - servant-blaze
 - split
+- template-haskell
 - text
 - transformers
 - wai
