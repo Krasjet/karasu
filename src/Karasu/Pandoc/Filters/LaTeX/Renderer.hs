@@ -114,7 +114,7 @@ compileSVG cacheDir texDoc = runExceptT $
 
     -- convert to svg file
     (exitCode', out', err') <- io $ readProcessWithCWD tmpDir "dvisvgm" $
-      ["-n", "-j", "-Z", "1.28"] ++ ["-o", tmpFile <.> "svg", tmpFile <.> "dvi"]
+      ["-n", "-j", "-Z", "1.28", "-e"] ++ ["-o", tmpFile <.> "svg", tmpFile <.> "dvi"]
       -- ^ no font and clipjoin w/ zoom 23/18
     when (exitCode' /= ExitSuccess) $ throwE $ DVISVGMFailure (out' ++ "\n" ++ err')
 
