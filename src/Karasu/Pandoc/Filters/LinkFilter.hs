@@ -7,7 +7,7 @@ import Karasu.Pandoc.Filters.Utils
 
 import Text.Pandoc
 
--- | Add a soft word break (<wbr>) after '/'
+-- | set target to _blank
 linkFilter' :: Inline -> Inline
 linkFilter' (Link (identi, cls, attrs) child target) =
   Link (identi, cls, ("target", "_blank") : attrs) child target
