@@ -38,7 +38,7 @@ mkTeXDoc preamble texString = LT.pack [kfmt|\
 \\usepackage{xcolor}
 \\renewcommand{\\rmdefault}{zpltlf}
 \\usepackage{newpxmath}
-\\usepackage[scr=rsfso, cal=pxtx, bb=ams, frak=pxtx]{mathalfa}
+\\usepackage[scr=rsfso, cal=cm, bb=ams, frak=pxtx]{mathalfa}
 <preamble>
 \\begin{document}
 \\begin{preview}
