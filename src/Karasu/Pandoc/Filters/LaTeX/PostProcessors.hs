@@ -1,5 +1,3 @@
-{-# LANGUAGE QuasiQuotes #-}
-
 -- Heavily modified from https://github.com/phadej/latex-svg
 -- 2020 Krasjet, 2020 Oleg Grenrus, 2015-2019 Liam O'Connor
 
@@ -14,7 +12,6 @@ import qualified Text.Parsec.String as P
 
 import Control.Applicative (some, (<|>))
 import Data.List           (foldl')
-import PyF
 
 -- | We will retreive the baseline from viewbox parameters
 viewboxMarker :: String
@@ -24,7 +21,7 @@ viewboxMarker = " viewBox='"
 getBaseline :: SVG -> Double
 getBaseline str = getBaseline' sfx
   where
-    (_pfx, sfx) = spanL viewboxMarker str
+    (_, sfx) = spanL viewboxMarker str
 
 -- | A helper function for actually retrieving the baseline
 getBaseline' :: String -> Double
@@ -82,16 +79,12 @@ getBaseline' sfx = case P.parse parser "<input>" sfx of
     lexeme :: P.Parser a -> P.Parser a
     lexeme p = p <* P.spaces
 
--- | Alter the SVG image to include baseline correction
+-- | Remove the id in g tag and clean up comments
 postProcessSVG :: SVG -> SVG
 postProcessSVG xml =
-  [fmt|{pfx} style='vertical-align: {baseline:.6}pt' {sfx'}|]
+  preG <> "<g>" <> postG
     where
       (_, svg)   = spanL "<svg" xml
-      (pfx, sfx) = spanL viewboxMarker svg
-      baseline   = getBaseline' sfx
-      -- we will remove the annoying id as well
-      (preG, gTag) = spanL "<g " sfx
+      (preG, gTag) = spanL "<g " svg
       (_, postG) = spanR '>' gTag
-      sfx' = preG <> "<g>" <> postG
 

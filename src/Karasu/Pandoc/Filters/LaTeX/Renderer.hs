@@ -22,6 +22,7 @@ import Control.Monad.Trans.Except (ExceptT (..), runExceptT, throwE,
                                    withExceptT)
 import System.Exit                (ExitCode (..))
 import System.FilePath            ((<.>), (</>))
+import System.Directory            (removeFile)
 import Text.Pandoc.Definition     (MathType (..))
 
 -- | Make latex document for options
@@ -117,5 +118,12 @@ compileSVG cacheDir texDoc = runExceptT $
       -- ^ no font and clipjoin w/ zoom 23/18
     when (exitCode' /= ExitSuccess) $ throwE $ DVISVGMFailure (out' ++ "\n" ++ err')
 
+    -- read svg file
+    svg <- io $ readFile (tmpDir </> tmpFile <.> "svg")
+
+    -- sometimes dvisvgm will fail without notice
+    -- force removing the rendered image to prevent propagating error
+    io $ removeFile (tmpDir </> tmpFile <.> "svg")
+
     -- return
-    io $ readFile (tmpDir </> tmpFile <.> "svg")
+    return svg
