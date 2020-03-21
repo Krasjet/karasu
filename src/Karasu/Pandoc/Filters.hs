@@ -7,6 +7,7 @@ import Karasu.Pandoc.Filters.SlashFilter
 import Karasu.Pandoc.Filters.SmcpFilter
 import Karasu.Pandoc.Filters.LaTeXFilter
 import Karasu.Pandoc.Filters.Utils
+import Karasu.Pandoc.Filters.LinkFilter
 import Karasu.Models
 
 -- | These filters are only applied during final rendering and are disabled
@@ -21,7 +22,8 @@ cosmeticFilters =
 -- | These filters are always applied
 functionalFilters :: DocId -> [PandocFilterIO]
 functionalFilters docId =
-  [ latexFilterBlock docId
+  [ linkFilter
+  , latexFilterBlock docId
   , latexFilterInline docId
   , smcpFilter
   ]
