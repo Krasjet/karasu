@@ -18,7 +18,7 @@ import qualified Data.Text             as T
 import qualified Data.Text.Encoding    as T
 
 import Data.ByteString.Base64 as Base64
-import System.FilePath            ((</>))
+import System.FilePath        ((</>))
 import Text.Pandoc.Definition
 
 -- * Utils
@@ -64,8 +64,13 @@ renderHandleError env (Right svg) =
   case env of
     Nothing -> Image ("", ["tex"], attrs) [] (svgE, "")
     --                    ^ class
-    Just e  -> Image ("", ["tex", T.pack e], attrs) [] (svgE, "")
+    Just e  -> Image ("", ["tex", T.pack $ map escapeStar e], attrs) [] (svgE, "")
     where
+      -- | escape starred environments, align* -> align_
+      escapeStar :: Char -> Char
+      escapeStar '*' = '_'
+      escapeStar  x  =  x
+
       -- | post processed svg
       psvg :: SVG
       psvg = postProcessSVG svg
