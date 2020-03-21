@@ -90,5 +90,7 @@ mathEnv = [kfmt|\
 tikzEnv :: LaTeXEnv
 tikzEnv = mathEnv <> [kfmt|\
 \\usepackage{tikz}
+\\usepackage{pgfplots}
 \\usetikzlibrary{arrows,calc,patterns,angles,quotes,3d,arrows.meta,positioning}
+\\pgfplotsset{compat=1.16}
 |]
