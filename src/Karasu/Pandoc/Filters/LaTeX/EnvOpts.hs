@@ -64,5 +64,6 @@ mathEnv = [kfmt|\
 
 tikzEnv :: LaTeXEnv
 tikzEnv = [kfmt|\
-\\usepackage{tikz}\
+\\usepackage{tikz}
+\\usetikzlibrary{positioning}\
 |]
