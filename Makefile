@@ -27,5 +27,7 @@ clean:
 	rm -rf ./docs
 	rm -rf ./view
 	rm -rf ./backup
+	rm -rf ./cache
+	rm -rf ./.tmp
 	rm -rf ./kamome/dist/*
 
