@@ -3,9 +3,9 @@
 -- | The renderer for markdown -> html conversion
 module Karasu.Pandoc.Renderer (renderPreview, renderDisplay) where
 
-import Karasu.Pandoc.Options
 import Karasu.Models
 import Karasu.Pandoc.Filters
+import Karasu.Pandoc.Options
 
 import qualified Data.Text as T
 
@@ -37,14 +37,22 @@ renderWith
   -> Text                                    -- ^ content of the markdown
   -> IO (Either PandocError a)               -- ^ error or the final HTML
 renderWith writer fs md = runIO $ do
-  pandoc' <- readMarkdown defKarasuReaderOptions md
+  pandoc'@(Pandoc meta _) <- readMarkdown defKarasuReaderOptions md
+
+  -- denote if we should enable number sections
+  let numSec = case lookupMeta "number-sections" meta of
+       Just (MetaBool b) -> b
+       Just _            -> False
+       Nothing           -> False
+
   -- apply filters
   pandoc <- applyPandocFiltersIO fs pandoc'
+
   -- load preview templates
   -- TODO cache to memory instead
   res <- liftIO $ compileTemplateFile $ "templates" </> "preview" <.> "html"
   case res of
     Left e -> throwError $ PandocTemplateError (T.pack e)
     Right template -> do
-      let wOpts = defKarasuWriterOptions { writerTemplate = Just template }
+      let wOpts = (defKarasuWriterOptions numSec) { writerTemplate = Just template }
       writer wOpts pandoc

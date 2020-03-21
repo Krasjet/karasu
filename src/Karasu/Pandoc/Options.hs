@@ -8,8 +8,11 @@ defKarasuReaderOptions :: ReaderOptions
 defKarasuReaderOptions= def
     { readerExtensions = enableExtension Ext_smart pandocExtensions }
 
-
 -- | Default writer options for Karasu
-defKarasuWriterOptions :: WriterOptions
-defKarasuWriterOptions = def
-    { writerExtensions = enableExtension Ext_smart pandocExtensions }
+defKarasuWriterOptions
+  :: Bool          -- ^ number sections
+  -> WriterOptions
+defKarasuWriterOptions numSec = def
+    { writerExtensions = enableExtension Ext_smart pandocExtensions
+    , writerNumberSections = numSec
+    }
