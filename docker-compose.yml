@@ -24,10 +24,15 @@ services:
      - ./.env
     environment:
      - NGINX_HOST=localhost
+     # keys for SSL
+     - SSL_CERT=cert.pem
+     - SSL_KEY=cert.key
     volumes:
      - ./kamome/nginx/http.template:/etc/nginx/nginx.template
+     # If you want to use SSL
      # - ./kamome/nginx/https.template:/etc/nginx/nginx.template
      - ./run/view/:/app/view/
+     - ./certs:/etc/ssl/certs
      - static:/app/
     command: /bin/bash -c "envsubst '$$NGINX_HOST $$KARASU_PORT' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
     ports:
