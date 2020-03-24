@@ -67,6 +67,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -yq && \
 WORKDIR /app
 # use pre-compiled karasu
 COPY --from=build-karasu /build/bin/karasu /app/
+COPY --from=build-karasu /build/templates/ /app/templates/
 # use pre-compiled dvisvgm
 COPY --from=build-dvisvgm /build/bin/dvisvgm /usr/bin/dvisvgm
 
