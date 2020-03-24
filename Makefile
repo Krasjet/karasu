@@ -1,5 +1,8 @@
 .PHONY: run run-kamome run-karasu build-karasu build-kamome debug ghci clean
 
+run-app:
+	docker-compose up
+
 run: build-kamome run-karasu
 
 run-kamome:
