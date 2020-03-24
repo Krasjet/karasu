@@ -5,9 +5,6 @@ author:     "Krasjet"
 maintainer: "Krasjet"
 copyright:  "Copyright (c) 2020 Krasjet"
 
-extra-source-files:
-- README.md
-
 category: Web
 
 description: "A work in progress."

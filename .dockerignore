@@ -1,0 +1,17 @@
+.dockerignore
+Dockerfile
+.git/
+.gitignore
+README.md
+db/
+view/
+cache/
+backup/
+design
+stack.yaml.lock
+kamome/
+static/
+Makefile
+./deploy.sh
+karasu.cabal
+./.stack-work

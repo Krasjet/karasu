@@ -31,3 +31,8 @@ clean:
 	rm -rf ./.tmp
 	rm -rf ./kamome/dist/*
 
+build-docker:
+	docker build -t karasu .
+
+run-docker:
+	docker run -it -v $(shell pwd)/db:/app/db/ karasu
