@@ -11,3 +11,4 @@ design
 deploy.sh
 stack.yaml.lock
 karasu.cabal
+run/
