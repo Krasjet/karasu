@@ -11,7 +11,8 @@ Due to the use of licensed fonts, you need to find proper replacement for the [f
 $ git clone --recursive https://github.com/Krasjet/karasu.git
 $ cd karasu
 $ cp .env.example .env
-# find alternative fonts or kamome https://github.com/Krasjet/kamome/tree/master/static/fonts
+# find alternative fonts for kamome
+# see https://github.com/Krasjet/kamome/tree/master/static/fonts
 $ docker-compose up
 ```
 
