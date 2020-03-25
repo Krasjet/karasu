@@ -62,7 +62,7 @@ renderHandleError :: Maybe LaTeXEnv -> Either RenderError SVG -> Inline
 renderHandleError _ (Left err) = displayError err
 renderHandleError env (Right svg) =
   case env of
-    Nothing -> Image ("", ["tex"], attrs) [] (svgE, "")
+    Nothing -> Image ("", ["tex", "noenv"], attrs) [] (svgE, "")
     --                    ^ class
     Just e  -> Image ("", ["tex", T.pack $ map escapeStar e], attrs) [] (svgE, "")
     where
