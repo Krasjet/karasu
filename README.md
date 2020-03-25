@@ -8,7 +8,7 @@ Due to the limitations of GitHub's Markdown. Please see [**here**](https://krasj
 
 Due to the use of licensed fonts, you need to find proper replacement for the [fonts used in kamome](https://github.com/Krasjet/kamome/tree/master/static/fonts) first. Except this, docker compose should be able to take care of everything.
 ```
-$ git clone https://github.com/Krasjet/karasu.git
+$ git clone --recursive https://github.com/Krasjet/karasu.git
 $ cd karasu
 $ cp .env.example .env
 $ docker-compose up
