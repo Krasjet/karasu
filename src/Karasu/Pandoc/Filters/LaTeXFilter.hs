@@ -105,7 +105,7 @@ latexFilterInline'
 -- math environment
 latexFilterInline' docId (Math mathType texStr) =
   renderInlineSVG docId (Just mathType) $ T.unpack texStr
--- math environment
+-- tex environment
 latexFilterInline' docId (RawInline (Format "tex") texStr) =
   renderInlineSVG docId Nothing $ T.unpack texStr
 latexFilterInline' _ x = return x
