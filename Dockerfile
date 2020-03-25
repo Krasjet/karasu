@@ -22,8 +22,8 @@ RUN apt-get update && apt-get install --no-install-recommends -yq \
 
 WORKDIR /build
 
-# we need a newer version of dvisvgm to use the exact-bbox option this might
-# not be needed when texlive-2020 is released
+# we need a newer version of dvisvgm for ghostscript compatibility and the
+# exact-bbox option. This might not be needed when texlive-2020 is released
 RUN git clone -b 2.9.1 https://github.com/mgieseki/dvisvgm.git
 RUN cd dvisvgm/ && \
     ./autogen.sh && \
