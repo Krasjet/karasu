@@ -1,6 +1,6 @@
 # karasu
 
-[karasu](https://github.com/Krasjet/karasu) (カラス) is a self-hosted remote communication system designed for mathematicians and myself. karasu is expected to be accompanied by [kamome](https://github.com/Krasjet/kamome) (カモメ), the editor and style­sheets for karasu.
+[karasu](https://github.com/Krasjet/karasu) is a self-hosted remote communication system designed for mathematicians and myself. karasu is expected to be accompanied by [kamome](https://github.com/Krasjet/kamome), the editor and style­sheets for karasu.
 
 Due to the limitations of GitHub's Markdown. Please see [**here**](https://krasjet.com/voice/karasu/) for detailed introduction.
 
