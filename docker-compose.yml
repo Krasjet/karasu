@@ -35,7 +35,7 @@ services:
      - ./run/view/:/app/view/
      - ./certs:/etc/ssl/certs
      - static:/app/
-    command: /bin/bash -c "envsubst '$$NGINX_HOST $$KARASU_PORT' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
+    command: /bin/bash -c "envsubst '$$NGINX_HOST $$KARASU_PORT $$SSL_CERT $$SSL_KEY' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
     ports:
      - "80:80"
      - "443:443"
