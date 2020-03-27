@@ -8,35 +8,25 @@ import Karasu.Server
 import qualified Data.Text as T
 
 import Configuration.Dotenv                 (defaultConfig, loadFile)
+import Control.Exception                    (bracket)
 import Control.Monad                        (void, when)
+import Data.Pool                            (destroyAllResources)
 import Network.Wai.Handler.Warp
 import Network.Wai.Middleware.RequestLogger (logStdout)
 import Servant
 import System.Directory                     (doesFileExist)
 import System.FilePath.Posix                ((</>))
 
+-- * The actual main function
+runKarasu :: IO ()
+runKarasu = bracket loadEnv shutdownApp runApp
+
 -- * application
 app :: KarasuEnv -> Application
-app env = serve karasuApi $ karasuServer env
+app env = logStdout $ serve karasuApi $ karasuServer env
+--        ^ middleware for logging
 
--- * server
-karasuSettings :: KarasuEnv -> Settings
-karasuSettings env =
-  let port = envPort env in
-  setPort port $
-  setBeforeMainLoop (putStrLn $ "Karasu listening on port " ++ show port)
-  defaultSettings
-
--- | The actual main function
-runKarasu :: IO ()
-runKarasu = do
-  -- load environments
-  env <- loadEnv
-  let settings = karasuSettings env
-  runSettings settings $ logStdout $ app env
-  --                     ^ middleware for logging
-
--- | Load runtime environments
+-- | load runtime environments
 loadEnv :: IO KarasuEnv
 loadEnv = do
   -- load dotenv file if exists
@@ -55,3 +45,18 @@ loadEnv = do
     , envPool   = pool
     , envMaster = T.pack masterPass
     }
+
+-- | start the server
+runApp :: KarasuEnv -> IO ()
+runApp env = runSettings settings $ app env
+  where
+  settings :: Settings
+  settings =
+    let port = envPort env in
+    setPort port $
+    setBeforeMainLoop (putStrLn $ "Karasu listening on port " ++ show port)
+    defaultSettings
+
+-- | clean up
+shutdownApp :: KarasuEnv -> IO ()
+shutdownApp env = destroyAllResources (envPool env)
