@@ -16,3 +16,4 @@ Makefile
 ./deploy.sh
 karasu.cabal
 ./.stack-work
+.github/
