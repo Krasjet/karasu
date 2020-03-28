@@ -1,8 +1,7 @@
-name: build docker image
+name: docker
 on:
   schedule:
     - cron: '0 18 */2 * *' # every two days at 18:00
-
 jobs:
   build:
     runs-on: ubuntu-latest
