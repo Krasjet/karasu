@@ -19,7 +19,12 @@ services:
       - static:/app/static
   kamome:
     restart: always
-    build: ./kamome/
+    build:
+      context: ./kamome/
+      args:
+        # use free fonts instead of my default licensed fonts
+        - USE_ALT_FONTS=true
+        # - USE_ALT_FONTS=false
     image: "kamome"
     env_file:
      - ./.env

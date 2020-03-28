@@ -6,15 +6,15 @@ Due to the limitations of GitHub's Markdown. Please see [**here**](https://krasj
 
 ## Install
 
-Due to the use of licensed fonts, you need to find proper replacement for the [fonts used in kamome](https://github.com/Krasjet/kamome/tree/master/static/fonts) first. Except this, docker compose should be able to take care of everything.
+Docker compose should be able to take care of everything.
 ```
 $ git clone --recursive https://github.com/Krasjet/karasu.git
 $ cd karasu
 $ cp .env.example .env
-# find alternative fonts for kamome
-# see https://github.com/Krasjet/kamome/tree/master/static/fonts
 $ docker-compose up
 ```
+
+Note that the default fonts in [kamome](https://github.com/Krasjet/kamome) is a set of alternative free fonts. If you want to use the ones I'm currently using, you need to purchase/download the fonts listed [here](https://github.com/Krasjet/kamome/tree/master/static/fonts) and set the `USE_ALT_FONTS` option in `docker-compose.yml` to `false`.
 
 ## Screenshots
 
