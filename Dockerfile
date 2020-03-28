@@ -77,6 +77,6 @@ WORKDIR /app
 COPY --from=build-karasu /build/bin/karasu /app/
 COPY --from=build-karasu /build/templates/ /app/templates/
 # use pre-compiled dvisvgm
-# COPY --from=build-dvisvgm /build/bin/dvisvgm /usr/bin/dvisvgm
+COPY --from=build-dvisvgm /build/bin/dvisvgm /usr/bin/dvisvgm
 
 ENTRYPOINT /app/karasu
