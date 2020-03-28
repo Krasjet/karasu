@@ -1,0 +1,17 @@
+name: build docker image
+on:
+  schedule:
+    - cron: '0 18 */2 * *' # every two days at 18:00
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: krasjet/karasu
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_TOKEN }}
+        tags: "latest"
+        tag_names: true
