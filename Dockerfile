@@ -1,35 +1,35 @@
 # Probably no longer needed
-# # --- build dvisvgm ---
-# FROM ubuntu:19.10 AS build-dvisvgm
+# --- build dvisvgm ---
+FROM ubuntu:19.10 AS build-dvisvgm
 
-# ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
-# RUN apt-get update && apt-get install --no-install-recommends -yq \
-#     autotools-dev \
-#     libfreetype6-dev \
-#     libgs-dev \
-#     libkpathsea-dev \
-#     libz-dev \
-#     python-lxml \
-#     asciidoc \
-#     xmlto \
-#     xsltproc \
-#     g++ \
-#     ca-certificates \
-#     git \
-#     autoconf \
-#     automake \
-#     libtool
+RUN apt-get update && apt-get install --no-install-recommends -yq \
+    autotools-dev \
+    libfreetype6-dev \
+    libgs-dev \
+    libkpathsea-dev \
+    libz-dev \
+    python-lxml \
+    asciidoc \
+    xmlto \
+    xsltproc \
+    g++ \
+    ca-certificates \
+    git \
+    autoconf \
+    automake \
+    libtool
 
-# WORKDIR /build
+WORKDIR /build
 
-# # we need a newer version of dvisvgm for ghostscript compatibility and the
-# # exact-bbox option. This might not be needed when texlive-2020 is released
-# RUN git clone -b 2.9.1 https://github.com/mgieseki/dvisvgm.git
-# RUN cd dvisvgm/ && \
-#     ./autogen.sh && \
-#     ./configure --prefix="/build/" --enable-bundled-libs && \
-#     make install
+# we need a newer version of dvisvgm for ghostscript compatibility and the
+# exact-bbox option. This might not be needed when texlive-2020 is released
+RUN git clone -b 2.9.1 https://github.com/mgieseki/dvisvgm.git
+RUN cd dvisvgm/ && \
+    ./autogen.sh && \
+    ./configure --prefix="/build/" --enable-bundled-libs && \
+    make install
 
 # --- build dependencies ---
 FROM fpco/stack-build-small:lts-14.27 AS dependencies
