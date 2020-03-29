@@ -1,5 +1,4 @@
-# Probably no longer needed
-# --- build dvisvgm ---
+# --- build dvisvgm, probably no longer needed ---
 FROM ubuntu:19.10 AS build-dvisvgm
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -19,7 +18,11 @@ RUN apt-get update && apt-get install --no-install-recommends -yq \
     git \
     autoconf \
     automake \
-    libtool
+    libtool && \
+    apt-get autoclean autoremove && \
+    rm -rf /var/lib/apt/lists/* \
+           /tmp/* \
+           /var/tmp/*
 
 WORKDIR /build
 
@@ -31,25 +34,18 @@ RUN cd dvisvgm/ && \
     ./configure --prefix="/build/" --enable-bundled-libs && \
     make install
 
-# --- build dependencies ---
-FROM fpco/stack-build-small:lts-14.27 AS dependencies
+# --- build karasu ---
+FROM fpco/stack-build-small:lts-14.27 AS build-karasu
 
 WORKDIR /build
 
 # we only need these two to build the dependencies
 COPY stack.yaml package.yaml /build/
-
 # because of pandoc, this will take a long time
 RUN stack build --dependencies-only
 
-# --- build karasu ---
-FROM fpco/stack-build-small:lts-14.27 AS build-karasu
-
-# the cache from dependencies
-COPY --from=dependencies /root/.stack /root/.stack
+# start building karasu
 COPY . /build/
-
-WORKDIR /build
 
 RUN stack build
 RUN mv "$(stack path --local-install-root)/bin" /build/bin
