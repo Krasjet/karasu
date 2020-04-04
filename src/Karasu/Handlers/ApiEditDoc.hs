@@ -22,7 +22,7 @@ type EditDocApi = "edit"
                :> Get '[HTML] Html
 
 -- | Send the editor page
-editDoc :: DocId ->  KHandler Html
+editDoc :: DocId -> KHandler Html
 editDoc docId = do
   -- raise error if 404
   docExists404 docId

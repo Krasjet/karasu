@@ -21,8 +21,7 @@ import Servant
 -- | settings for static server
 staticSettings :: FilePath -> StaticSettings
 staticSettings root = (defaultWebAppSettings root)
-  {
-    ssIndices = map unsafeToPiece ["index.html", "index.htm"]
+  { ssIndices = map unsafeToPiece ["index.html"]
   , ssRedirectToIndex = True
   , ssAddTrailingSlash = True
   }

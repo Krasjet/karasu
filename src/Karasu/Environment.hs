@@ -18,11 +18,11 @@ import Text.Read                        (readMaybe)
 -- * Environment variables
 data KarasuEnv
     = KarasuEnv
-    { envDebug    :: Bool           -- in debug mode or not
-    , envPool     :: ConnectionPool -- connection pool for database
-    , envPort     :: Port           -- port number of the server
-    , envMaster   :: MasterPassword -- master password for creating documents (TODO encryption)
-    , envTemplate :: HTMLTemplate           -- template HTML file
+    { envDebug    :: !Bool           -- in debug mode or not
+    , envPool     :: !ConnectionPool -- connection pool for database
+    , envPort     :: !Port           -- port number of the server
+    , envMaster   :: !MasterPassword -- master password for creating documents (TODO encryption)
+    , envTemplate :: !HTMLTemplate           -- template HTML file
     }
 
 -- | Obtain an environment variable and parse with default value
