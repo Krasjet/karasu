@@ -7,7 +7,7 @@ module Karasu.Database
   , mkPool
   , getDoc404WithMsg
   , getDoc404
-  , docExists404
+  , docExists
   , getDocWithValidation
   , validateDoc
   ) where
@@ -24,6 +24,7 @@ import Control.Monad.IO.Class  (MonadIO, liftIO)
 import Control.Monad.Logger    (runNoLoggingT, runStdoutLoggingT)
 import Control.Monad.Reader    (MonadReader, asks)
 import Data.ByteString.Lazy    (ByteString)
+import Data.Maybe              (isJust)
 import Database.Persist.Sqlite
 import Servant
 
@@ -56,7 +57,7 @@ getDoc404WithMsg
 getDoc404WithMsg docId msg = do
   res <- runDb $ getBy $ UniqueDocId docId
   case res of
-    Nothing -> throwError err404 { errBody = msg }
+    Nothing                  -> throwError err404 { errBody = msg }
     Just (Entity docKey doc) -> return (docKey, doc)
 
 -- | A simple wrapper for retrieving documents using DocId with error handling
@@ -66,12 +67,12 @@ getDoc404
   -> m (Key DocInfo, DocInfo) -- ^ (docKey, docInfo)
 getDoc404 = flip getDoc404WithMsg "Something wrong with the docId."
 
--- | Only check if the document exists or not. Raise 404 error if not.
-docExists404
-  :: (MonadReader KarasuEnv m, MonadIO m, MonadError ServerError m)
-  => DocId -- ^ the document id
-  -> m ()  -- ^ result ignored
-docExists404 = void . flip getDoc404WithMsg "Nothing here."
+-- | Check if the document exists or not.
+docExists
+  :: (MonadReader KarasuEnv m, MonadIO m)
+  => DocId  -- ^ the document id
+  -> m Bool -- ^ whether the document exists in the database or not
+docExists docId = isJust <$> runDb (getBy $ UniqueDocId docId)
 
 -- | getBy404 plus access code verification
 getDocWithValidation

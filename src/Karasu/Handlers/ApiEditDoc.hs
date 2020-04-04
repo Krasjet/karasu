@@ -5,29 +5,29 @@
 -- | API for creating a document, for private use only
 module Karasu.Handlers.ApiEditDoc (EditDocApi, editDoc) where
 
--- import Karasu.Database
--- import Karasu.Handler
+import Karasu.Database
+import Karasu.Handler
 import Karasu.Models
-import Karasu.Environment
 
-import Network.Wai
-import Data.Tagged
 import Network.HTTP.Types
+import Network.Wai
 import Servant
-import System.FilePath          ((<.>), (</>))
+import Servant.RawM
+import System.FilePath    ((<.>), (</>))
 
 type EditDocApi = "edit"
                :> Capture "docId" DocId
-               :> Raw
+               :> RawM
 
-editDocApp :: KarasuEnv -> DocId -> Application
-editDocApp _env _docId _ resp = do
-  -- raise error if 404
-  -- docExists404 docId
-
+editDocApp :: Bool -> Application
+editDocApp True _ resp = do
+  -- document exists, return editor
   let header = [("Content-Type", "text/html")]
   resp $ responseFile status200 header ("static" </> "editor" <.> "html") Nothing
+editDocApp False _ resp =
+  -- nothing found, return 404
+  resp $ responseLBS status404 [] "Nothing here."
 
 -- | Send the editor page
-editDoc :: KarasuEnv -> DocId -> Server Raw
-editDoc = (Tagged .) . editDocApp
+editDoc :: DocId -> ServerT RawM KHandler
+editDoc docId = editDocApp <$> docExists docId

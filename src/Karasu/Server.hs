@@ -47,16 +47,12 @@ viewServer = serveDirectoryWith $ viewSettings "view/"
 --   We will need to use hoistServer to apply the
 --   natural transformation KHandler ~> Handler
 apiServerK :: ServerT ReqApi KHandler
-apiServerK = createDoc :<|> getDoc :<|> previewDoc :<|> saveDoc
+apiServerK = createDoc :<|> editDoc :<|> getDoc :<|> previewDoc :<|> saveDoc
 
 -- | Transformed server
 apiServer :: KarasuEnv -> Server ReqApi
 apiServer env = hoistServer reqApi (nt env) apiServerK
 
--- | Server for raw end points
-rawServer :: KarasuEnv -> Server RawApi
-rawServer = editDoc
-
 -- * Combined server
 karasuServer :: KarasuEnv -> Server KarasuApi
-karasuServer env = apiServer env :<|> rawServer env :<|> viewServer :<|> staticServer
+karasuServer env = apiServer env :<|> viewServer :<|> staticServer
