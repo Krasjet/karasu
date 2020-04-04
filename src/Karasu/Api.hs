@@ -2,7 +2,7 @@
 {-# LANGUAGE TypeOperators #-}
 
 -- | A summary of all the API definitions
-module Karasu.Api (KarasuApi, ReqApi, karasuApi, reqApi) where
+module Karasu.Api (KarasuApi, ReqApi, RawApi, karasuApi, reqApi) where
 
 import Karasu.Handlers.ApiCreateDoc
 import Karasu.Handlers.ApiEditDoc
@@ -14,10 +14,12 @@ import Karasu.Handlers.ViewDoc
 
 import Servant
 
--- API for requests
-type ReqApi = CreateDocApi :<|> EditDocApi :<|> GetDocApi :<|> PreviewDocApi :<|> SaveDocApi
--- combined APIs for the app
-type KarasuApi = ReqApi  :<|> ViewDoc :<|> StaticFiles
+-- | API for requests
+type ReqApi = CreateDocApi :<|> GetDocApi :<|> PreviewDocApi :<|> SaveDocApi
+-- | Raw endpoints will be handled separately
+type RawApi = EditDocApi
+-- | combined APIs for the app
+type KarasuApi = ReqApi :<|> RawApi :<|> ViewDoc :<|> StaticFiles
 
 reqApi :: Proxy ReqApi
 reqApi = Proxy

@@ -5,29 +5,29 @@
 -- | API for creating a document, for private use only
 module Karasu.Handlers.ApiEditDoc (EditDocApi, editDoc) where
 
-import Karasu.Database
-import Karasu.Handler
+-- import Karasu.Database
+-- import Karasu.Handler
 import Karasu.Models
+import Karasu.Environment
 
-import qualified Data.Text.IO as TIO
-
-import Control.Monad.IO.Class (liftIO)
+import Network.Wai
+import Data.Tagged
+import Network.HTTP.Types
 import Servant
-import Servant.HTML.Blaze
-import System.FilePath        ((<.>), (</>))
-import Text.Blaze.Html
+import System.FilePath          ((<.>), (</>))
 
 type EditDocApi = "edit"
                :> Capture "docId" DocId
-               :> Get '[HTML] Html
+               :> Raw
+
+editDocApp :: KarasuEnv -> DocId -> Application
+editDocApp _env _docId _ resp = do
+  -- raise error if 404
+  -- docExists404 docId
+
+  let header = [("Content-Type", "text/html")]
+  resp $ responseFile status200 header ("static" </> "editor" <.> "html") Nothing
 
 -- | Send the editor page
-editDoc :: DocId -> KHandler Html
-editDoc docId = do
-  -- raise error if 404
-  docExists404 docId
-
-  -- TODO might want to use responseFile to avoid extra buffering
-  -- https://github.com/haskell-servant/servant/issues/1281
-  html <- liftIO $ TIO.readFile $ "static" </> "editor" <.> "html"
-  return $ preEscapedToMarkup html
+editDoc :: KarasuEnv -> DocId -> Server Raw
+editDoc = (Tagged .) . editDocApp

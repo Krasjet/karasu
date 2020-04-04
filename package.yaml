@@ -22,6 +22,7 @@ dependencies:
 - doctemplates
 - dotenv
 - filepath
+- http-types
 - monad-logger
 - mtl
 - pandoc >= 2.7 && < 2.10
@@ -31,11 +32,13 @@ dependencies:
 - persistent-sqlite
 - process
 - PyF
+- servant-rawm
 - resource-pool
 - servant
 - servant-server
 - servant-blaze
 - split
+- tagged
 - template-haskell
 - text
 - transformers
