@@ -20,11 +20,12 @@ import System.FilePath        ((<.>), (</>))
 -- | Render and save markdown preview to disk
 renderSaveMarkdownPreview
   :: (MonadReader KarasuEnv m, MonadIO m, MonadError ServerError m)
-  => DocId    -- ^ the document id
-  -> Markdown -- ^ the markdown document
-  -> m Text   -- ^ rendered html
-renderSaveMarkdownPreview docId md = do
-  out <- liftIO $ renderDisplay docId md
+  => DocId        -- ^ the document id
+  -> HTMLTemplate -- ^ template
+  -> Markdown     -- ^ the markdown document
+  -> m Text       -- ^ rendered html
+renderSaveMarkdownPreview docId tmpl md = do
+  out <- liftIO $ renderDisplay docId tmpl md
   case out of
     Left err -> throwError err400 { errBody = LB8.pack $ show err }
     Right h  -> do

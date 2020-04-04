@@ -6,6 +6,7 @@
 module Karasu.Handlers.ApiPreviewDoc (PreviewDocApi, previewDoc) where
 
 import Karasu.Database
+import Karasu.Environment
 import Karasu.Handler
 import Karasu.Models
 import Karasu.Pandoc.Renderer
@@ -18,6 +19,7 @@ import GHC.Generics
 import Servant
 import Servant.HTML.Blaze
 import Text.Blaze.Html
+import Control.Monad.Reader    (asks)
 
 data PreviewDocBody = PreviewDocBody {
   docId      :: DocId,
@@ -42,7 +44,8 @@ previewDoc prevBody = do
 
   -- render the markdown file
   let md = markdown prevBody
-  out <- liftIO $ renderPreview dId md
+  tmpl <- asks envTemplate
+  out <- liftIO $ renderPreview dId tmpl md
   case out of
     Left err   -> throwError err400 { errBody = LB8.pack $ show err }
     Right html -> return html

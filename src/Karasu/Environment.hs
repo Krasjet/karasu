@@ -1,8 +1,13 @@
 -- | A few utility functions to deal with runtime environments, i.e. a global
 -- state shared by all handlers
-module Karasu.Environment (KarasuEnv(..), lookupEnvVar, lookupEnvVarParse) where
+module Karasu.Environment
+  ( KarasuEnv(..)
+  , lookupEnvVar
+  , lookupEnvVarParse
+  ) where
 
-import Karasu.Models (MasterPassword)
+import Karasu.Models          (MasterPassword)
+import Karasu.Pandoc.Renderer (HTMLTemplate)
 
 import Configuration.Dotenv.Environment (lookupEnv)
 import Data.Maybe                       (fromMaybe)
@@ -13,10 +18,11 @@ import Text.Read                        (readMaybe)
 -- * Environment variables
 data KarasuEnv
     = KarasuEnv
-    { envDebug  :: Bool           -- in debug mode or not
-    , envPool   :: ConnectionPool -- connection pool for database
-    , envPort   :: Port           -- port number of the server
-    , envMaster :: MasterPassword -- master password for creating documents (TODO encryption)
+    { envDebug    :: Bool           -- in debug mode or not
+    , envPool     :: ConnectionPool -- connection pool for database
+    , envPort     :: Port           -- port number of the server
+    , envMaster   :: MasterPassword -- master password for creating documents (TODO encryption)
+    , envTemplate :: HTMLTemplate           -- template HTML file
     }
 
 -- | Obtain an environment variable and parse with default value

@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 -- | The renderer for markdown -> html conversion
-module Karasu.Pandoc.Renderer (renderPreview, renderDisplay) where
+module Karasu.Pandoc.Renderer (renderPreview, renderDisplay, HTMLTemplate(..)) where
 
 import Karasu.Models
 import Karasu.Pandoc.Filters
@@ -12,14 +12,17 @@ import qualified Data.Text as T
 import Control.Monad.Except   (throwError)
 import Control.Monad.IO.Class (liftIO)
 import Data.Text              (Text)
-import System.FilePath        ((<.>), (</>))
 import Text.Blaze.Html
 import Text.DocTemplates
 import Text.Pandoc
 
+-- | data type for an html template
+data HTMLTemplate = HTMLTemplate FilePath Text
+
 -- | Render a preview HTML from markdown file.
 renderPreview
   :: DocId                        -- ^ document id
+  -> HTMLTemplate                 -- ^ template
   -> Text                         -- ^ content of the markdown file
   -> IO (Either PandocError Html) -- ^ error or the final HTML
 renderPreview = renderWith writeHtml5 . functionalFilters
@@ -27,6 +30,7 @@ renderPreview = renderWith writeHtml5 . functionalFilters
 -- | Render the final html for saving from markdown file.
 renderDisplay
   :: DocId                        -- ^ document id
+  -> HTMLTemplate                 -- ^ template
   -> Text                         -- ^ content of the markdown file
   -> IO (Either PandocError Text) -- ^ error or the final text
 renderDisplay docId = renderWith writeHtml5String (functionalFilters docId <> cosmeticFilters)
@@ -34,9 +38,10 @@ renderDisplay docId = renderWith writeHtml5String (functionalFilters docId <> co
 renderWith
   :: (WriterOptions -> Pandoc -> PandocIO a) -- ^ writer
   -> [PandocFilterIO]                        -- ^ a list of pandoc filters
+  -> HTMLTemplate                            -- ^ template
   -> Text                                    -- ^ content of the markdown
   -> IO (Either PandocError a)               -- ^ error or the final HTML
-renderWith writer fs md = runIO $ do
+renderWith writer fs (HTMLTemplate fp tmpl) md = runIO $ do
   pandoc'@(Pandoc meta _) <- readMarkdown defKarasuReaderOptions md
 
   -- denote if we should enable number sections
@@ -48,9 +53,9 @@ renderWith writer fs md = runIO $ do
   -- apply filters
   pandoc <- applyPandocFiltersIO fs pandoc'
 
-  -- load preview templates
-  -- TODO cache to memory instead
-  res <- liftIO $ compileTemplateFile $ "templates" </> "preview" <.> "html"
+  -- compile template
+  res <- liftIO $ compileTemplate fp tmpl
+
   case res of
     Left e -> throwError $ PandocTemplateError (T.pack e)
     Right template -> do

@@ -68,6 +68,7 @@ createDoc docBody = do
     throwError err409 { errBody = "Something is already there." }
 
   -- save the default markdown preview to file
-  void $ renderSaveMarkdownPreview dId defaultTxt
+  tmpl <- asks envTemplate
+  void $ renderSaveMarkdownPreview dId tmpl defaultTxt
 
   return "The doc is up. Hooray!"

@@ -8,6 +8,7 @@
 module Karasu.Handlers.ApiSaveDoc (SaveDocApi, saveDoc) where
 
 import Karasu.Database
+import Karasu.Environment
 import Karasu.Handler
 import Karasu.Models
 import Karasu.Pandoc
@@ -16,6 +17,7 @@ import Karasu.Utils
 import Control.Monad           (when)
 import Control.Monad.Except    (MonadError)
 import Control.Monad.IO.Class  (liftIO)
+import Control.Monad.Reader    (asks)
 import Data.Aeson
 import Data.Text               (Text)
 import Database.Persist.Sqlite
@@ -89,6 +91,7 @@ saveDoc saveBody = do
   -- actually update the document (atomic)
   res <- runDb $ updateGet docKey [ DocInfoVersion +=. 1, DocInfoText =. md ]
   -- save the rendered markdown to file
-  h <- renderSaveMarkdownPreview dId md
+  tmpl <- asks envTemplate
+  h <- renderSaveMarkdownPreview dId tmpl md
   return $ SaveDocRes (docInfoVersion res) h
   -- TODO protect with MVar/TVar

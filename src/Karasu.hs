@@ -3,9 +3,11 @@ module Karasu (runKarasu) where
 import Karasu.Api
 import Karasu.Database
 import Karasu.Environment
+import Karasu.Pandoc.Renderer
 import Karasu.Server
 
-import qualified Data.Text as T
+import qualified Data.Text    as T
+import qualified Data.Text.IO as TIO
 
 import Configuration.Dotenv                 (defaultConfig, loadFile)
 import Control.Exception                    (bracket)
@@ -15,7 +17,7 @@ import Network.Wai.Handler.Warp
 import Network.Wai.Middleware.RequestLogger (logStdout)
 import Servant
 import System.Directory                     (doesFileExist)
-import System.FilePath.Posix                ((</>))
+import System.FilePath.Posix                ((<.>), (</>))
 
 -- * The actual main function
 runKarasu :: IO ()
@@ -31,19 +33,26 @@ loadEnv :: IO KarasuEnv
 loadEnv = do
   -- load dotenv file if exists
   dotEnvExists <- doesFileExist ".env"
-  when dotEnvExists $
-    void $ loadFile defaultConfig
-  debug  <- lookupEnvVarParse "KARASU_DEBUG" False
-  port   <- lookupEnvVarParse "KARASU_PORT" 8080
-  dbFile <- lookupEnvVar "KARASU_DB" $ "db" </> "karasu.db"
-  poolSize <- lookupEnvVarParse "KARASU_POOL_SIZE" 5
+  when dotEnvExists $ void $ loadFile defaultConfig
+
+  -- load variables
+  debug      <- lookupEnvVarParse "KARASU_DEBUG" False
+  port       <- lookupEnvVarParse "KARASU_PORT" 8080
+  dbFile     <- lookupEnvVar "KARASU_DB" $ "db" </> "karasu.db"
+  poolSize   <- lookupEnvVarParse "KARASU_POOL_SIZE" 5
   masterPass <- lookupEnvVar "KARASU_MASTERPASS" "karasu"
-  pool   <- mkPool dbFile debug poolSize
+  pool       <- mkPool dbFile debug poolSize
+
+  -- cache template file in memory so we don't have to read it multiple times
+  let tmplPath = "templates" </> "preview" <.> "html"
+  tmpl <- TIO.readFile tmplPath
+
   return KarasuEnv
     { envDebug  = debug
     , envPort   = port
     , envPool   = pool
     , envMaster = T.pack masterPass
+    , envTemplate = HTMLTemplate tmplPath tmpl
     }
 
 -- | start the server
