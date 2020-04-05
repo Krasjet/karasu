@@ -37,7 +37,7 @@ renderDisplay docId = renderWith writeHtml5String (functionalFilters docId <> co
 
 renderWith
   :: (WriterOptions -> Pandoc -> PandocIO a) -- ^ writer
-  -> [PandocFilterIO]                        -- ^ a list of pandoc filters
+  -> [PandocFilterIO Pandoc]                 -- ^ a list of pandoc filters
   -> HTMLTemplate                            -- ^ template
   -> Text                                    -- ^ content of the markdown
   -> IO (Either PandocError a)               -- ^ error or the final HTML

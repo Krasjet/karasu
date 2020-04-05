@@ -8,6 +8,7 @@ import Karasu.Pandoc.Filters.Utils
 import qualified Data.Text as T
 
 import Data.Char   (isUpper)
+import Data.Map   (update)
 import Data.Text   (Text)
 import Text.Pandoc
 
@@ -33,5 +34,13 @@ smcpFilter' (Str str) =
 -- retain everything else
 smcpFilter' x = [x]
 
-smcpFilter :: PandocFilterIO
-smcpFilter = toPandocFilterIO smcpFilter'
+-- | Only the value associated with the keys in this list will be small capped
+-- in Meta
+metaWhitelist :: [Text]
+metaWhitelist = ["title", "pagetitle"]
+
+smcpFilter :: PandocFilterIO Pandoc
+smcpFilter (Pandoc (Meta meta) blocks) = do
+  let blocks' = toPandocFilter smcpFilter' blocks
+      meta' = foldr (update $ Just . toPandocFilter smcpFilter') meta metaWhitelist
+  return $ Pandoc (Meta meta') blocks'

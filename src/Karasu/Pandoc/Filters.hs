@@ -9,10 +9,11 @@ import Karasu.Pandoc.Filters.LaTeXFilter
 import Karasu.Pandoc.Filters.Utils
 import Karasu.Pandoc.Filters.LinkFilter
 import Karasu.Models
+import Text.Pandoc
 
 -- | These filters are only applied during final rendering and are disabled
 -- during preview
-cosmeticFilters :: [PandocFilterIO]
+cosmeticFilters :: [PandocFilterIO Pandoc]
 cosmeticFilters =
   [ dashFilter
   , kernFilter
@@ -20,7 +21,7 @@ cosmeticFilters =
   ]
 
 -- | These filters are always applied
-functionalFilters :: DocId -> [PandocFilterIO]
+functionalFilters :: DocId -> [PandocFilterIO Pandoc]
 functionalFilters docId =
   [ linkFilter
   , latexFilterBlock docId

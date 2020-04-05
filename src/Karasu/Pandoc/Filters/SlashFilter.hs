@@ -22,5 +22,5 @@ slashFilter' (Str str) = foldr appendBreak [] $
                         split (dropBlanks $ onSublist "/") $ T.unpack str
 slashFilter' x = [x]
 
-slashFilter :: PandocFilterIO
+slashFilter :: PandocFilterIO Pandoc
 slashFilter = toPandocFilterIO slashFilter'

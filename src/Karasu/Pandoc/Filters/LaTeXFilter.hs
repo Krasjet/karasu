@@ -133,8 +133,8 @@ latexFilterBlock' _ x = return x
 
 -- * partial -> complete filter
 
-latexFilterInline :: DocId -> PandocFilterIO
+latexFilterInline :: DocId -> PandocFilterIO Pandoc
 latexFilterInline = toPandocFilterIO . latexFilterInline'
 
-latexFilterBlock :: DocId -> PandocFilterIO
+latexFilterBlock :: DocId -> PandocFilterIO Pandoc
 latexFilterBlock = toPandocFilterIO . latexFilterBlock'

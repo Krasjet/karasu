@@ -27,5 +27,5 @@ dashFilter' (Str str) = appendNoWrap $
   split (dropBlanks $ onSublist emDash) $ T.unpack str
 dashFilter' x = [x]
 
-dashFilter :: PandocFilterIO
+dashFilter :: PandocFilterIO Pandoc
 dashFilter = toPandocFilterIO dashFilter'

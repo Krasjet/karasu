@@ -52,5 +52,5 @@ kernFilter' (Str str) = foldr appendKern [] $
                        split (dropBlanks $ oneOf kernPrefix) $ T.unpack str
 kernFilter' x = [x]
 
-kernFilter :: PandocFilterIO
+kernFilter :: PandocFilterIO Pandoc
 kernFilter = toPandocFilterIO kernFilter'

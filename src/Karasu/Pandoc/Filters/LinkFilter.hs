@@ -13,5 +13,5 @@ linkFilter' (Link (identi, cls, attrs) child target) =
   Link (identi, cls, ("target", "_blank") : attrs) child target
 linkFilter' x = x
 
-linkFilter :: PandocFilterIO
+linkFilter :: PandocFilterIO Pandoc
 linkFilter = toPandocFilterIO linkFilter'
