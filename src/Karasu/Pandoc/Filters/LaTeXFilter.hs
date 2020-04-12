@@ -93,9 +93,10 @@ renderHandleError env (Right svg) =
 renderInlineSVG
   :: DocId          -- ^ document id for cache dir
   -> Maybe MathType -- ^ is math environment
-  -> TeXString      -- ^ the tex string to be rendered
+  -> T.Text           -- ^ the tex string to be rendered
   -> IO Inline
-renderInlineSVG docId mt texStr = uncurry renderHandleError <$> renderTeXStr docId mt texStr
+renderInlineSVG docId mt texStr =
+  uncurry renderHandleError <$> renderTeXStr docId mt ((T.unpack . T.strip) texStr) -- TODO switch to Text instead
 
 -- | Convert inline TeX strings to SVG images
 latexFilterInline'
@@ -104,10 +105,10 @@ latexFilterInline'
   -> IO Inline
 -- math environment
 latexFilterInline' docId (Math mathType texStr) =
-  renderInlineSVG docId (Just mathType) $ T.unpack texStr
+  renderInlineSVG docId (Just mathType) texStr
 -- tex environment
 latexFilterInline' docId (RawInline (Format "tex") texStr) =
-  renderInlineSVG docId Nothing $ T.unpack texStr
+  renderInlineSVG docId Nothing texStr
 latexFilterInline' _ x = return x
 
 -- * Block filter
@@ -116,7 +117,7 @@ latexFilterInline' _ x = return x
 renderBlockSVG
   :: DocId          -- ^ document id for cache dir
   -> Maybe MathType -- ^ is math environment
-  -> TeXString      -- ^ the tex string to be rendered
+  -> T.Text         -- ^ the tex string to be rendered
   -> IO Block
 renderBlockSVG docId mt texStr = do
   i <- renderInlineSVG docId mt texStr
@@ -128,7 +129,7 @@ latexFilterBlock'
   -> Block
   -> IO Block
 latexFilterBlock' docId (RawBlock (Format "tex") texStr) =
-  renderBlockSVG docId Nothing $ T.unpack texStr
+  renderBlockSVG docId Nothing texStr
 latexFilterBlock' _ x = return x
 
 -- * partial -> complete filter
