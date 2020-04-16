@@ -18,10 +18,10 @@ import Text.Pandoc
 -- | The kerning table
 kernTable :: Map (Char, Char) Text
 kernTable = Map.fromList
-  [ (('(', 'j'), ".04rem")
-  , (('(', 'J'), ".05rem")
-  , (('[', 'j'), ".06rem")
-  , (('[', 'J'), ".07rem")
+  [ (('(', 'j'), ".04em")
+  , (('(', 'J'), ".05em")
+  , (('[', 'j'), ".06em")
+  , (('[', 'J'), ".07em")
   ]
 kernPrefix :: String
 kernPrefix = nub . map fst $ Map.keys kernTable
