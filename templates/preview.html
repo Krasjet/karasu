@@ -4,6 +4,7 @@
 <title>$if(pagetitle)$$pagetitle$$else$$title$$endif$</title>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="format-detection" content="telephone=no" />
 <meta name="robots" content="noindex" />
 <meta name="referrer" content="no-referrer" />
 <link href="/styles/reset.css" rel="stylesheet" />
@@ -13,8 +14,8 @@
 </head>
 <body>
 <header>
-<h1>$title$</h1>$if(author)$
-<div class="author sc">by $author$</div>$endif$
+<h1 id="title">$title$</h1>$if(author)$
+<div class="author smcp">by $author$</div>$endif$
 </header>
 <main>
 $body$
