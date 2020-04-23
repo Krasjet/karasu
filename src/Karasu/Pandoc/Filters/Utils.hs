@@ -37,9 +37,9 @@ instance (Walkable [a] p) => ToPandocFilter (a -> [a]) p where
   toPandocFilter = walk . concatMap
 
 -- | This class converts partial pandoc filters (i.e. at the level of @a@, usually being Inlines and Blocks) to composable (@p@ -> IO @p@) filters, where @p@ is usually Pandoc.
-class ToPandocFilterIO a p where
+class ToPandocFilterIO f p where
   toPandocFilterIO
-    :: a                -- ^ partial filter
+    :: f                -- ^ partial filter
     -> PandocFilterIO p -- ^ the output pandoc IO filter
 
 instance (Walkable a p) => ToPandocFilterIO (a -> a) p where

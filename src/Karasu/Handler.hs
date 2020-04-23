@@ -1,3 +1,4 @@
+{-# LANGUAGE RankNTypes #-}
 -- | Our own custom handler
 module Karasu.Handler (KHandler, nt) where
 
@@ -13,6 +14,5 @@ type KHandler = ReaderT KarasuEnv Handler
 -- | The natural transformation KHandler ~> Handler
 nt
   :: KarasuEnv  -- ^ the runtime environment
-  -> KHandler a
-  -> Handler a
+  -> forall a. KHandler a -> Handler a
 nt env kHdl = runReaderT kHdl env
