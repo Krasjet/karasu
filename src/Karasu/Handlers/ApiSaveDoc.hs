@@ -54,7 +54,7 @@ backupMarkdown
   -> Version  -- ^ client side version + 1
   -> IO ()
 backupMarkdown dId md ver = do
-  -- *almost* unique identifier for the markdown file
+  --  v *almost* unique identifier for the markdown file
   let hash = hashText' md
   let filename = "backup" </> dId </> show ver <> "-" <> hash <.> "md"
   writeFileHandleMissing' filename md

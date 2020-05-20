@@ -1,5 +1,5 @@
 name:       karasu
-version:    1.1.1
+version:    1.2.0
 license:    MIT
 author:     "Krasjet"
 maintainer: "Krasjet"
@@ -7,7 +7,7 @@ copyright:  "Copyright (c) 2020 Krasjet"
 
 category: Web
 
-description: "A work in progress."
+description: "A self-hosted remote communication system designed for math discussions."
 
 dependencies:
 - base >= 4.7 && < 5
