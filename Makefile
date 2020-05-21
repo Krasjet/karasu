@@ -40,3 +40,8 @@ build-docker:
 
 run-docker:
 	docker run -it -v $(shell pwd)/db:/app/db/ karasu
+
+ghcid:
+	@ghcid \
+		--command "stack ghci karasu:lib" \
+		--test "main"
