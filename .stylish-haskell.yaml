@@ -1,24 +1,28 @@
+cabal: true
+columns: 80
+newline: lf
 steps:
   - simple_align:
       cases: true
-      top_level_patterns: true
       records: true
+      top_level_patterns: true
   - imports:
       align: group
-      list_align: after_alias
-      pad_module_names: true
-      long_list_align: inline
       empty_list_align: right_after
+      list_align: after_alias
       list_padding: module_name
+      long_list_align: inline
+      pad_module_names: true
       separate_lists: true
       space_surround: false
   - language_pragmas:
-      style: vertical
       align: true
-      remove_redundant: true
       language_prefix: LANGUAGE
+      remove_redundant: true
+      style: vertical
+  - records:
+      deriving: 2
+      equals: 'indent 3'
+      field_comment: 2
+      first_field: 'indent -2'
   - trailing_whitespace: {}
-
-columns: 80
-newline: lf
-cabal: true

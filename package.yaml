@@ -27,6 +27,7 @@ dependencies:
 - mtl
 - pandoc >= 2.7 && < 2.10
 - pandoc-types >= 1.20 && < 2
+- pandoc-utils
 - parsec
 - persistent-template
 - persistent-sqlite

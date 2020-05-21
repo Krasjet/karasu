@@ -1,9 +1,9 @@
 .PHONY: run run-kamome run-karasu build-karasu build-kamome debug ghci clean
 
+run: build-kamome run-karasu
+
 run-app:
 	docker-compose up
-
-run: build-kamome run-karasu
 
 run-kamome:
 	@ln -snf kamome/dist static
@@ -26,6 +26,7 @@ ghci:
 	@stack ghci
 
 clean:
+	@stack clean
 	rm -rf ./db
 	rm -rf ./docs
 	rm -rf ./view
