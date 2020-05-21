@@ -10,16 +10,16 @@ import Karasu.Pandoc.Filters.LaTeX.Definitions
 import Karasu.Pandoc.Filters.LaTeX.EnvOpts
 import Karasu.Pandoc.Filters.LaTeX.PostProcessors
 import Karasu.Pandoc.Filters.LaTeX.Renderer
-import Karasu.Pandoc.Filters.Utils
 import PyF
 
 import qualified Data.ByteString.Char8 as BS8
 import qualified Data.Text             as T
 import qualified Data.Text.Encoding    as T
 
-import Data.ByteString.Base64 as Base64
-import System.FilePath        ((</>))
+import Data.ByteString.Base64   as Base64
+import System.FilePath          ((</>))
 import Text.Pandoc.Definition
+import Text.Pandoc.Filter.Utils
 
 -- * Utils
 
@@ -134,8 +134,8 @@ latexFilterBlock' _ x = return x
 
 -- * partial -> complete filter
 
-latexFilterInline :: DocId -> PandocFilterIO Pandoc
-latexFilterInline = toPandocFilterIO . latexFilterInline'
+latexFilterInline :: DocId -> PandocFilterM IO
+latexFilterInline = toFilter . latexFilterInline'
 
-latexFilterBlock :: DocId -> PandocFilterIO Pandoc
-latexFilterBlock = toPandocFilterIO . latexFilterBlock'
+latexFilterBlock :: DocId -> PandocFilterM IO
+latexFilterBlock = toFilter . latexFilterBlock'

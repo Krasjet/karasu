@@ -3,12 +3,11 @@
 -- | A pandoc filter that prevents orphaned em dashes
 module Karasu.Pandoc.Filters.DashFilter (dashFilter) where
 
-import Karasu.Pandoc.Filters.Utils
-
 import qualified Data.Text as T
 
-import Data.List.Split (dropBlanks, onSublist, split)
+import Data.List.Split          (dropBlanks, onSublist, split)
 import Text.Pandoc
+import Text.Pandoc.Filter.Utils
 
 -- | The em dash character
 emDash :: String
@@ -27,5 +26,5 @@ dashFilter' (Str str) = appendNoWrap $
   split (dropBlanks $ onSublist emDash) $ T.unpack str
 dashFilter' x = [x]
 
-dashFilter :: PandocFilterIO Pandoc
-dashFilter = toPandocFilterIO dashFilter'
+dashFilter :: PandocFilter
+dashFilter = toFilter dashFilter'

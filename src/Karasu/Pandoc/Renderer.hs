@@ -9,12 +9,13 @@ import Karasu.Pandoc.Options
 
 import qualified Data.Text as T
 
-import Control.Monad.Except   (throwError)
-import Control.Monad.IO.Class (liftIO)
-import Data.Text              (Text)
+import Control.Monad.Except     (throwError)
+import Control.Monad.IO.Class   (liftIO)
+import Data.Text                (Text)
 import Text.Blaze.Html
 import Text.DocTemplates
 import Text.Pandoc
+import Text.Pandoc.Filter.Utils
 
 -- | data type for an html template
 data HTMLTemplate = HTMLTemplate FilePath Text
@@ -37,7 +38,7 @@ renderDisplay docId = renderWith writeHtml5String (functionalFilters docId <> co
 
 renderWith
   :: (WriterOptions -> Pandoc -> PandocIO a) -- ^ writer
-  -> [PandocFilterIO Pandoc]                 -- ^ a list of pandoc filters
+  -> [PandocFilterM IO]                 -- ^ a list of pandoc filters
   -> HTMLTemplate                            -- ^ template
   -> Text                                    -- ^ content of the markdown
   -> IO (Either PandocError a)               -- ^ error or the final HTML
@@ -51,7 +52,7 @@ renderWith writer fs (HTMLTemplate fp tmpl) md = runIO $ do
        Nothing           -> False
 
   -- apply filters
-  pandoc <- applyPandocFiltersIO fs pandoc'
+  pandoc <- liftIO $ applyFiltersM fs pandoc'
 
   -- compile template
   res <- liftIO $ compileTemplate fp tmpl

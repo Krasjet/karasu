@@ -5,6 +5,3 @@ packages:
 - pandoc-utils/
 
 extra-deps: []
-
-ghc-options:
-  "$locals": -fwrite-ide-info

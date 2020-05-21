@@ -3,12 +3,11 @@
 -- | A pandoc filter that adds a soft word break (<wbr>) after '/'
 module Karasu.Pandoc.Filters.SlashFilter (slashFilter) where
 
-import Karasu.Pandoc.Filters.Utils
-
 import qualified Data.Text as T
 
-import Data.List.Split (dropBlanks, onSublist, split)
+import Data.List.Split          (dropBlanks, onSublist, split)
 import Text.Pandoc
+import Text.Pandoc.Filter.Utils
 
 -- | A helper function for slashFilter, which replaces / with /<wbr> in a
 -- string
@@ -22,5 +21,5 @@ slashFilter' (Str str) = foldr appendBreak [] $
                         split (dropBlanks $ onSublist "/") $ T.unpack str
 slashFilter' x = [x]
 
-slashFilter :: PandocFilterIO Pandoc
-slashFilter = toPandocFilterIO slashFilter'
+slashFilter :: PandocFilter
+slashFilter = toFilter slashFilter'

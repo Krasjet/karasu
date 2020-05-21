@@ -4,16 +4,15 @@
 -- specifically for Garibaldi
 module Karasu.Pandoc.Filters.KernFilter (kernFilter) where
 
-import Karasu.Pandoc.Filters.Utils
-
 import qualified Data.Map  as Map
 import qualified Data.Text as T
 
-import Data.List       (nub)
-import Data.List.Split (dropBlanks, oneOf, split)
-import Data.Map        (Map)
-import Data.Text       (Text)
+import Data.List                (nub)
+import Data.List.Split          (dropBlanks, oneOf, split)
+import Data.Map                 (Map)
+import Data.Text                (Text)
 import Text.Pandoc
+import Text.Pandoc.Filter.Utils
 
 -- | The kerning table
 kernTable :: Map (Char, Char) Text
@@ -52,5 +51,5 @@ kernFilter' (Str str) = foldr appendKern [] $
                        split (dropBlanks $ oneOf kernPrefix) $ T.unpack str
 kernFilter' x = [x]
 
-kernFilter :: PandocFilterIO Pandoc
-kernFilter = toPandocFilterIO kernFilter'
+kernFilter :: PandocFilter
+kernFilter = toFilter kernFilter'

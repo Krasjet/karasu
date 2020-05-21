@@ -3,7 +3,7 @@
 -- | A pandoc filter to transform capital letters into small caps
 module Karasu.Pandoc.Filters.SmcpFilter (smcpFilter) where
 
-import Karasu.Pandoc.Filters.Utils
+import Text.Pandoc.Filter.Utils
 
 import qualified Data.Set  as Set
 import qualified Data.Text as T
@@ -53,20 +53,24 @@ replaceFilter cond cls (Str str) =
 replaceFilter _ _ x = [x]
 
 -- | Convert capital letters to smallcaps
-smcpFilter' :: Inline -> [Inline]
-smcpFilter' = replaceFilter isSmcp "cap"
+smcpFilterInline' :: Inline -> [Inline]
+smcpFilterInline' = replaceFilter isSmcp "cap"
 
 -- | Convert symbols to smallcaps
-c2scFilter' :: Inline -> [Inline]
-c2scFilter' = replaceFilter isc2sc "c2sc"
+c2scFilterInline' :: Inline -> [Inline]
+c2scFilterInline' = replaceFilter isc2sc "c2sc"
 
 -- | Only the value associated with the keys in this list will be small capped
 -- in Meta
 metaWhitelist :: [Text]
 metaWhitelist = ["title", "pagetitle"]
 
-smcpFilter :: PandocFilterIO Pandoc
-smcpFilter (Pandoc (Meta meta) blocks) = do
-  let blocks' = (toPandocFilter c2scFilter'. toPandocFilter smcpFilter') blocks
-      meta' = foldr (update $ Just . toPandocFilter c2scFilter' . toPandocFilter smcpFilter') meta metaWhitelist
-  return $ Pandoc (Meta meta') blocks'
+smcpFilter' :: Pandoc -> Pandoc
+smcpFilter' (Pandoc (Meta meta) blocks) = Pandoc (Meta meta') blocks'
+  where
+    blocks' = applyFilter (toFilter c2scFilterInline' <> toFilter smcpFilterInline') blocks
+
+    meta' = foldr (update $ Just . getFilter (toFilter c2scFilterInline' <> toFilter smcpFilterInline')) meta metaWhitelist
+
+smcpFilter :: PandocFilter
+smcpFilter = toFilter smcpFilter'

@@ -1,30 +1,30 @@
 -- | Pandoc Filters for Karasu
-module Karasu.Pandoc.Filters (PandocFilterIO, cosmeticFilters, functionalFilters, applyPandocFiltersIO) where
+module Karasu.Pandoc.Filters (cosmeticFilters, functionalFilters) where
 
+import Karasu.Models
 import Karasu.Pandoc.Filters.DashFilter
 import Karasu.Pandoc.Filters.KernFilter
+import Karasu.Pandoc.Filters.LaTeXFilter
+import Karasu.Pandoc.Filters.LinkFilter
 import Karasu.Pandoc.Filters.SlashFilter
 import Karasu.Pandoc.Filters.SmcpFilter
-import Karasu.Pandoc.Filters.LaTeXFilter
-import Karasu.Pandoc.Filters.Utils
-import Karasu.Pandoc.Filters.LinkFilter
-import Karasu.Models
-import Text.Pandoc
+
+import Text.Pandoc.Filter.Utils
 
 -- | These filters are only applied during final rendering and are disabled
 -- during preview
-cosmeticFilters :: [PandocFilterIO Pandoc]
-cosmeticFilters =
+cosmeticFilters :: [PandocFilterM IO]
+cosmeticFilters = map toFilterM
   [ dashFilter
   , kernFilter
   , slashFilter
   ]
 
 -- | These filters are always applied
-functionalFilters :: DocId -> [PandocFilterIO Pandoc]
+functionalFilters :: DocId -> [PandocFilterM IO]
 functionalFilters docId =
-  [ linkFilter
+  [ toFilterM linkFilter
   , latexFilterBlock docId
   , latexFilterInline docId
-  , smcpFilter
+  , toFilterM smcpFilter
   ]
