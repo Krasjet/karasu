@@ -22,4 +22,4 @@ slashFilter' (Str str) = foldr appendBreak [] $
 slashFilter' x = [x]
 
 slashFilter :: PandocFilter
-slashFilter = toFilter slashFilter'
+slashFilter = mkFilter slashFilter'

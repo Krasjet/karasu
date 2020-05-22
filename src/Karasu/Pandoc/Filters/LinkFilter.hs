@@ -14,4 +14,4 @@ linkFilter' (Link (identi, cls, attrs) child target) =
 linkFilter' x = x
 
 linkFilter :: PandocFilter
-linkFilter = toFilter linkFilter'
+linkFilter = mkFilter linkFilter'

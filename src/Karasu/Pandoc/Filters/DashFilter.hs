@@ -27,4 +27,4 @@ dashFilter' (Str str) = appendNoWrap $
 dashFilter' x = [x]
 
 dashFilter :: PandocFilter
-dashFilter = toFilter dashFilter'
+dashFilter = mkFilter dashFilter'

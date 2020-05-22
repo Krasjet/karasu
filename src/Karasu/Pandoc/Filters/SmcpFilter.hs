@@ -68,9 +68,9 @@ metaWhitelist = ["title", "pagetitle"]
 smcpFilter' :: Pandoc -> Pandoc
 smcpFilter' (Pandoc (Meta meta) blocks) = Pandoc (Meta meta') blocks'
   where
-    blocks' = applyFilter (toFilter c2scFilterInline' <> toFilter smcpFilterInline') blocks
+    blocks' = applyFilter (mkFilter c2scFilterInline' <> mkFilter smcpFilterInline') blocks
 
-    meta' = foldr (update $ Just . getFilter (toFilter c2scFilterInline' <> toFilter smcpFilterInline')) meta metaWhitelist
+    meta' = foldr (update $ Just . getFilter (mkFilter c2scFilterInline' <> mkFilter smcpFilterInline')) meta metaWhitelist
 
 smcpFilter :: PandocFilter
-smcpFilter = toFilter smcpFilter'
+smcpFilter = mkFilter smcpFilter'

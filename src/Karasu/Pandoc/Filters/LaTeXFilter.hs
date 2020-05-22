@@ -135,7 +135,7 @@ latexFilterBlock' _ x = return x
 -- * partial -> complete filter
 
 latexFilterInline :: DocId -> PandocFilterM IO
-latexFilterInline = toFilter . latexFilterInline'
+latexFilterInline = mkFilter . latexFilterInline'
 
 latexFilterBlock :: DocId -> PandocFilterM IO
-latexFilterBlock = toFilter . latexFilterBlock'
+latexFilterBlock = mkFilter . latexFilterBlock'

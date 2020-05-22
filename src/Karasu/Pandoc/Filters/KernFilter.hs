@@ -52,4 +52,4 @@ kernFilter' (Str str) = foldr appendKern [] $
 kernFilter' x = [x]
 
 kernFilter :: PandocFilter
-kernFilter = toFilter kernFilter'
+kernFilter = mkFilter kernFilter'
