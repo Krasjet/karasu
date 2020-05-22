@@ -3,5 +3,7 @@ resolver: lts-15.13
 packages:
 - .
 - pandoc-utils/
+- fl.tr/
+- libkst/
 
 extra-deps: []

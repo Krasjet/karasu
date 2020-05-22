@@ -14,10 +14,10 @@ module Karasu.Database
 
 import Karasu.Environment
 import Karasu.Models
-import Karasu.Utils
 
 import qualified Data.Text as T
 
+import Libkst.IO
 import Control.Monad           (void, when)
 import Control.Monad.Except    (MonadError)
 import Control.Monad.IO.Class  (MonadIO, liftIO)

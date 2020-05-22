@@ -1,5 +1,5 @@
 name:       karasu
-version:    1.2.0
+version:    1.3.0
 license:    MIT
 author:     "Krasjet"
 maintainer: "Krasjet"
@@ -10,6 +10,9 @@ category: Web
 description: "A self-hosted remote communication system designed for math discussions."
 
 dependencies:
+- pandoc-utils
+- libkst
+- fl-tr
 - base >= 4.7 && < 5
 - aeson
 - base64-bytestring
@@ -22,12 +25,12 @@ dependencies:
 - doctemplates
 - dotenv
 - filepath
+- fl-tr
 - http-types
 - monad-logger
 - mtl
 - pandoc >= 2.7 && < 2.10
 - pandoc-types >= 1.20 && < 2
-- pandoc-utils
 - parsec
 - persistent-template
 - persistent-sqlite

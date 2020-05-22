@@ -2,12 +2,13 @@
 module Karasu.Pandoc.Filters (cosmeticFilters, functionalFilters) where
 
 import Karasu.Models
-import Karasu.Pandoc.Filters.DashFilter
-import Karasu.Pandoc.Filters.KernFilter
-import Karasu.Pandoc.Filters.LaTeXFilter
-import Karasu.Pandoc.Filters.LinkFilter
-import Karasu.Pandoc.Filters.SlashFilter
-import Karasu.Pandoc.Filters.SmcpFilter
+
+import Text.Pandoc.Fltr.DashFilter
+import Text.Pandoc.Fltr.KernFilter
+import Text.Pandoc.Fltr.LaTeXFilter
+import Text.Pandoc.Fltr.LinkFilter
+import Text.Pandoc.Fltr.SlashFilter
+import Text.Pandoc.Fltr.SmcpFilter
 
 import Text.Pandoc.Filter.Utils
 

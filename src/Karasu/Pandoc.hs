@@ -1,4 +1,4 @@
-{-# LANGUAGE FlexibleContexts  #-}
+{-# LANGUAGE FlexibleContexts #-}
 
 -- | Karasu side pandoc functions
 module Karasu.Pandoc (renderSaveMarkdownPreview) where
@@ -6,7 +6,6 @@ module Karasu.Pandoc (renderSaveMarkdownPreview) where
 import Karasu.Environment
 import Karasu.Models
 import Karasu.Pandoc.Renderer
-import Karasu.Utils
 
 import qualified Data.ByteString.Lazy.Char8 as LB8
 
@@ -14,6 +13,7 @@ import Control.Monad.Except   (MonadError)
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import Control.Monad.Reader   (MonadReader)
 import Data.Text              (Text)
+import Libkst.IO
 import Servant
 import System.FilePath        ((<.>), (</>))
 

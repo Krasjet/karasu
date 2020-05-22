@@ -12,7 +12,6 @@ import Karasu.Environment
 import Karasu.Handler
 import Karasu.Models
 import Karasu.Pandoc
-import Karasu.Utils
 
 import Control.Monad           (when)
 import Control.Monad.Except    (MonadError)
@@ -22,20 +21,28 @@ import Data.Aeson
 import Data.Text               (Text)
 import Database.Persist.Sqlite
 import GHC.Generics
+import Libkst.Hash
+import Libkst.IO
 import Servant
 import System.FilePath         ((<.>), (</>))
 
-data SaveDocBody = SaveDocBody {
-  docId      :: DocId,
-  markdown   :: Markdown,
-  version    :: Version, -- version on the client side, we need to check for version conflicts
-  accessCode :: Maybe AccessCode
-} deriving (Generic, Show)
+data SaveDocBody
+   = SaveDocBody
+   { docId :: DocId
+   , markdown :: Markdown
+     -- ^ version on the client side, we need to check for version conflicts
+   , version :: Version
+     -- ^ version on the client side, we need to check for version conflicts
+   , accessCode :: Maybe AccessCode
+   }
+  deriving (Generic, Show)
 
-data SaveDocRes = SaveDocRes {
-  newVersion :: Version,
-  html       :: Text
-} deriving (Generic, Show)
+data SaveDocRes
+   = SaveDocRes
+   { newVersion :: Version
+   , html :: Text
+   }
+  deriving (Generic, Show)
 
 instance ToJSON   SaveDocBody
 instance FromJSON SaveDocBody

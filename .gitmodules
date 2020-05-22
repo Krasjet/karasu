@@ -4,3 +4,9 @@
 [submodule "pandoc-utils"]
 	path = pandoc-utils
 	url = https://github.com/Krasjet/pandoc-utils
+[submodule "libkst"]
+	path = libkst
+	url = https://github.com/Krasjet/libkst
+[submodule "fl.tr"]
+	path = fl.tr
+	url = https://github.com/Krasjet/fl.tr
