@@ -36,7 +36,7 @@
 #     make install
 
 # --- build karasu ---
-FROM fpco/stack-build-small:lts-14.27 AS build-karasu
+FROM fpco/stack-build-small:lts-15.13 AS build-karasu
 
 WORKDIR /build
 

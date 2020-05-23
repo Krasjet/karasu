@@ -1,6 +1,28 @@
 cradle:
   stack:
-    - path: "./"
+    - path: "./src"
       component: "karasu:lib"
-    - path: "./app"
+
+    - path: "./app/Main.hs"
       component: "karasu:exe:karasu"
+
+    - path: "./app/Paths_karasu.hs"
+      component: "karasu:exe:karasu"
+
+    - path: "fl.tr/src"
+      component: "fl-tr:lib"
+
+    - path: "fl.tr/test"
+      component: "fl-tr:test:filter-test"
+
+    - path: "libkst/src"
+      component: "libkst:lib"
+
+    - path: "libkst/test"
+      component: "libkst:test:libkst-test"
+
+    - path: "pandoc-utils/src"
+      component: "pandoc-utils:lib"
+
+    - path: "pandoc-utils/test"
+      component: "pandoc-utils:test:pandoc-utils-test"
