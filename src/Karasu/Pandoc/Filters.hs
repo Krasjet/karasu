@@ -8,6 +8,7 @@ import Karasu.Models
 import Text.Pandoc.Fltr.DashFilter
 import Text.Pandoc.Fltr.KernFilter
 import Text.Pandoc.Fltr.LaTeXFilter
+import Text.Pandoc.Fltr.BreakCodeFilter
 import Text.Pandoc.Fltr.LinkFilter
 import Text.Pandoc.Fltr.SlashFilter
 import Text.Pandoc.Fltr.SmcpFilter
@@ -27,6 +28,7 @@ cosmeticFilters = map toFilterM
 functionalFilters :: DocId -> [PandocFilterM IO]
 functionalFilters dId =
   [ toFilterM linkFilter
+  , toFilterM $ breakCodeFilter 8
   , latexFilter $ defOpts { docId = Just dId }
   , toFilterM smcpFilter
   ]
