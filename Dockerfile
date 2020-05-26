@@ -42,6 +42,9 @@ WORKDIR /build
 
 # we only need these two to build the dependencies
 COPY stack.yaml package.yaml /build/
+COPY fl.tr/ /build/fl.tr/
+COPY libkst/ /build/libkst/
+COPY pandoc-utils/ /build/pandoc-utils/
 # because of pandoc, this will take a long time
 RUN stack build --dependencies-only
 
@@ -52,7 +55,7 @@ RUN stack build
 RUN mv "$(stack path --local-install-root)/bin" /build/bin
 
 # --- the actual app ---
-FROM ubuntu:19.10
+FROM ubuntu:20.04
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update -yq && \
     apt-get install --no-install-recommends -y texlive-full locales && \
