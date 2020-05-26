@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 -- | Pandoc Filters for Karasu
 module Karasu.Pandoc.Filters (cosmeticFilters, functionalFilters) where
 
@@ -23,9 +25,14 @@ cosmeticFilters = map toFilterM
 
 -- | These filters are always applied
 functionalFilters :: DocId -> [PandocFilterM IO]
-functionalFilters docId =
+functionalFilters dId =
   [ toFilterM linkFilter
-  , latexFilterBlock docId
-  , latexFilterInline docId
+  , latexFilter $ defOpts { docId = Just dId }
   , toFilterM smcpFilter
   ]
+
+defOpts :: LaTeXFilterOptions
+defOpts = def
+  { cacheDir = Just "cache"
+  , tempDir = Just ".tmp"
+  }
