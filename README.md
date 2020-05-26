@@ -1,10 +1,16 @@
 # karasu
 
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Krasjet/karasu/build)](https://github.com/Krasjet/karasu/actions?query=workflow%3Abuild)
+
 **Refactoring in progress**
 
-[karasu](https://github.com/Krasjet/karasu) is a self-hosted remote communication system designed for mathematicians and myself. karasu is expected to be accompanied by [kamome](https://github.com/Krasjet/kamome), the editor and style­sheets for karasu.
+[karasu](https://github.com/Krasjet/karasu) is a self-hosted remote
+communication system designed for math discussions. karasu is expected to be
+accompanied by [kamome](https://github.com/Krasjet/kamome), the front-end
+components, i.e. the editor and style­sheets for karasu.
 
-Due to the limitations of GitHub's Markdown. Please see [**here**](https://krasjet.com/voice/karasu/) for detailed introduction.
+Due to the limitations of GitHub's Markdown. Please see
+[**here**](https://krasjet.com/voice/karasu/) for detailed introduction.
 
 ## Install
 
@@ -16,7 +22,11 @@ $ cp .env.example .env
 $ docker-compose up
 ```
 
-Note that the default fonts in [kamome](https://github.com/Krasjet/kamome) is a set of alternative free fonts. If you want to use the ones I'm currently using, you need to purchase/download the fonts listed [here](https://github.com/Krasjet/kamome/tree/master/static/fonts) and set the `USE_ALT_FONTS` option in `docker-compose.yml` to `false`.
+Note that the default fonts in [kamome](https://github.com/Krasjet/kamome) is a
+set of alternative free fonts. If you want to use the ones I'm currently using,
+you need to purchase/download the fonts listed
+[here](https://github.com/Krasjet/kamome/tree/master/static/fonts) and set the
+`USE_ALT_FONTS` option in `docker-compose.yml` to `false`.
 
 ## Screenshots
 
