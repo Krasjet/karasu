@@ -1,5 +1,5 @@
 name:       karasu
-version:    1.3.0
+version:    2.0.0
 license:    MIT
 author:     "Krasjet"
 maintainer: "Krasjet"
@@ -15,11 +15,8 @@ dependencies:
 - fl-tr
 - base >= 4.7 && < 5
 - aeson
-- base64-bytestring
 - blaze-html
 - bytestring
-- containers
-- cryptohash-sha256
 - deepseq
 - directory
 - doctemplates
@@ -31,11 +28,8 @@ dependencies:
 - mtl
 - pandoc >= 2.7 && < 2.10
 - pandoc-types >= 1.20 && < 2
-- parsec
 - persistent-template
 - persistent-sqlite
-- process
-- PyF
 - servant-rawm
 - resource-pool
 - servant
