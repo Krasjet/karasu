@@ -57,7 +57,9 @@ RUN mv "$(stack path --local-install-root)/bin" /build/bin
 # --- the actual app ---
 FROM ubuntu:20.04
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update -yq && \
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update -yq && \
     apt-get install --no-install-recommends -y texlive-full locales && \
     apt-get --purge remove -y .\*-doc$ && \
     apt-get autoclean autoremove && \
