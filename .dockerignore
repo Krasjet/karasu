@@ -25,5 +25,3 @@ stack.yaml.lock
 **/.stack-work
 **/dist-newstyle
 **/.stylish-haskell.yaml
-**/*.md
-**/LICENSE
