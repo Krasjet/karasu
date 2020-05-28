@@ -2,8 +2,6 @@
 
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Krasjet/karasu/build)](https://github.com/Krasjet/karasu/actions?query=workflow%3Abuild)
 
-**Refactoring in progress**
-
 [karasu](https://github.com/Krasjet/karasu) is a self-hosted remote
 communication system designed for math discussions. karasu is expected to be
 accompanied by [kamome](https://github.com/Krasjet/kamome), the front-end
