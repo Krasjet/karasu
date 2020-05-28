@@ -5,10 +5,10 @@ module Karasu.Pandoc.Filters (cosmeticFilters, functionalFilters) where
 
 import Karasu.Models
 
+import Text.Pandoc.Fltr.BreakCodeFilter
 import Text.Pandoc.Fltr.DashFilter
 import Text.Pandoc.Fltr.KernFilter
 import Text.Pandoc.Fltr.LaTeXFilter
-import Text.Pandoc.Fltr.BreakCodeFilter
 import Text.Pandoc.Fltr.LinkFilter
 import Text.Pandoc.Fltr.SlashFilter
 import Text.Pandoc.Fltr.SmcpFilter
