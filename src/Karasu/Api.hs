@@ -15,9 +15,9 @@ import Karasu.Handlers.ViewDoc
 import Servant
 
 -- | API for requests
-type ReqApi = CreateDocApi :<|> EditDocApi :<|> GetDocApi :<|> PreviewDocApi :<|> SaveDocApi
+type ReqApi = CreateDocApi :<|> EditDocApi :<|> GetDocApi :<|> PreviewDocApi :<|> SaveDocApi :<|> ViewDoc
 -- | combined APIs for the app
-type KarasuApi = ReqApi :<|> ViewDoc :<|> StaticFiles
+type KarasuApi = ReqApi :<|> StaticFiles
 
 reqApi :: Proxy ReqApi
 reqApi = Proxy

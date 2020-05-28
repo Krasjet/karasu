@@ -93,7 +93,7 @@ saveDoc saveBody = do
   -- if the client version is outdated, don't update.
   when (clientVer < currVer) throwNewVerAvailable
 
-  -- TODO protect with MVar or TVar, since index.html and database needs to be synced
+  -- TODO protect with MVar, since index.html and database needs to be synced
 
   -- actually update the document (atomic)
   res <- runDb $ updateGet docKey [ DocInfoVersion +=. 1, DocInfoText =. md ]
@@ -101,4 +101,4 @@ saveDoc saveBody = do
   tmpl <- asks envTemplate
   h <- renderSaveMarkdownPreview dId tmpl md
   return $ SaveDocRes (docInfoVersion res) h
-  -- TODO protect with MVar/TVar
+  -- TODO protect with MVar

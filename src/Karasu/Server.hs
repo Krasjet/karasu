@@ -26,19 +26,10 @@ staticSettings root = (defaultWebAppSettings root)
   , ssAddTrailingSlash = True
   }
 
--- | settings for view server
-viewSettings :: FilePath -> StaticSettings
-viewSettings root = (staticSettings root) { ssMaxAge = NoMaxAge }
-
 -- * Static server
 -- | which serves all the static files
 staticServer :: Server StaticFiles
 staticServer = serveDirectoryWith $ staticSettings "static/"
-
--- * View server
--- | which serves compiled documents
-viewServer :: Server ViewDoc
-viewServer = serveDirectoryWith $ viewSettings "view/"
 
 -- * API server
 -- which serves all APIs, of course
@@ -47,7 +38,7 @@ viewServer = serveDirectoryWith $ viewSettings "view/"
 --   We will need to use hoistServer to apply the
 --   natural transformation KHandler ~> Handler
 apiServerK :: ServerT ReqApi KHandler
-apiServerK = createDoc :<|> editDoc :<|> getDoc :<|> previewDoc :<|> saveDoc
+apiServerK = createDoc :<|> editDoc :<|> getDoc :<|> previewDoc :<|> saveDoc :<|> viewDoc
 
 -- | Transformed server
 apiServer :: KarasuEnv -> Server ReqApi
@@ -55,4 +46,4 @@ apiServer env = hoistServer reqApi (nt env) apiServerK
 
 -- * Combined server
 karasuServer :: KarasuEnv -> Server KarasuApi
-karasuServer env = apiServer env :<|> viewServer :<|> staticServer
+karasuServer env = apiServer env :<|> staticServer

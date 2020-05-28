@@ -1,5 +1,5 @@
--- | The route for serving static files
--- TODO remove this since nginx can handle static files now
+-- | The route for serving static files, only for testing. On deployment
+-- server, this is handled by nginx.
 module Karasu.Handlers.Static (StaticFiles) where
 
 import Servant
