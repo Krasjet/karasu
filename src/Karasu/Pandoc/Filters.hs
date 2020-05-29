@@ -12,6 +12,7 @@ import Text.Pandoc.Fltr.LaTeXFilter
 import Text.Pandoc.Fltr.LinkFilter
 import Text.Pandoc.Fltr.SlashFilter
 import Text.Pandoc.Fltr.SmcpFilter
+import Text.Pandoc.Fltr.ParaFilter
 
 import Text.Pandoc.Filter.Utils
 
@@ -27,7 +28,8 @@ cosmeticFilters = map toFilterM
 -- | These filters are always applied
 functionalFilters :: DocId -> [PandocFilterM IO]
 functionalFilters dId =
-  [ toFilterM linkFilter
+  [ toFilterM paraFilter
+  , toFilterM linkFilter
   , toFilterM $ breakCodeFilter 8
   , latexFilter $ defOpts { docId = Just dId }
   , toFilterM smcpFilter
