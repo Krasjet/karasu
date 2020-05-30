@@ -16,7 +16,7 @@ build-karasu:
 	@stack build
 
 build-kamome:
-	@cd kamome && yarn build
+	$(MAKE) -C kamome
 	@ln -snf kamome/dist static
 
 debug:
