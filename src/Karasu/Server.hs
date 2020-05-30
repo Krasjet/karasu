@@ -10,6 +10,7 @@ import Karasu.Handlers.ApiCreateDoc
 import Karasu.Handlers.ApiEditDoc
 import Karasu.Handlers.ApiGetDoc
 import Karasu.Handlers.ApiPreviewDoc
+import Karasu.Handlers.ApiRecompileAll
 import Karasu.Handlers.ApiSaveDoc
 import Karasu.Handlers.Static
 import Karasu.Handlers.ViewDoc
@@ -38,7 +39,9 @@ staticServer = serveDirectoryWith $ staticSettings "static/"
 --   We will need to use hoistServer to apply the
 --   natural transformation KHandler ~> Handler
 apiServerK :: ServerT ReqApi KHandler
-apiServerK = createDoc :<|> editDoc :<|> getDoc :<|> previewDoc :<|> saveDoc :<|> viewDoc
+apiServerK = createDoc :<|> editDoc :<|> getDoc
+       :<|> previewDoc :<|> saveDoc :<|> recompileAll
+       :<|> viewDoc
 
 -- | Transformed server
 apiServer :: KarasuEnv -> Server ReqApi

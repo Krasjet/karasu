@@ -11,11 +11,14 @@ import Karasu.Handlers.ApiPreviewDoc
 import Karasu.Handlers.ApiSaveDoc
 import Karasu.Handlers.Static
 import Karasu.Handlers.ViewDoc
+import Karasu.Handlers.ApiRecompileAll
 
 import Servant
 
 -- | API for requests
-type ReqApi = CreateDocApi :<|> EditDocApi :<|> GetDocApi :<|> PreviewDocApi :<|> SaveDocApi :<|> ViewDoc
+type ReqApi = CreateDocApi  :<|> EditDocApi :<|> GetDocApi
+         :<|> PreviewDocApi :<|> SaveDocApi :<|> RecompileAllApi
+         :<|> ViewDoc
 -- | combined APIs for the app
 type KarasuApi = ReqApi :<|> StaticFiles
 
