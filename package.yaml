@@ -30,7 +30,7 @@ dependencies:
 - pandoc-types >= 1.20 && < 2
 - persistent-template
 - persistent-sqlite
-- servant-rawm
+- servant-rawm-server
 - resource-pool
 - servant
 - servant-server

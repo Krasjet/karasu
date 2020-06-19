@@ -16,7 +16,7 @@ import Karasu.Models
 import Network.HTTP.Types
 import Network.Wai
 import Servant
-import Servant.RawM
+import Servant.RawM.Server (RawM)
 import System.FilePath    ((<.>), (</>))
 
 type ViewDoc = "view"

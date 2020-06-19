@@ -6,4 +6,9 @@ packages:
 - fl.tr/
 - libkst/
 
-extra-deps: []
+extra-deps:
+- github: Krasjet/servant-rawm
+  commit: 0e0d6aa0dcceb09c2c6292fa8396cfe3206d4b2f
+  subdirs:
+    - servant-rawm-api
+    - servant-rawm-server
