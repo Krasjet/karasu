@@ -8,7 +8,7 @@ packages:
 
 extra-deps:
 - github: Krasjet/servant-rawm
-  commit: 0e0d6aa0dcceb09c2c6292fa8396cfe3206d4b2f
+  commit: d3908666ef2c54dedb06ad364aecac9d3e7a7aa5
   subdirs:
-    - servant-rawm-api
+    - .
     - servant-rawm-server
