@@ -7,8 +7,5 @@ packages:
 - libkst/
 
 extra-deps:
-- github: Krasjet/servant-rawm
-  commit: e2cb75df39e886c5d188c5798e2adc060f3cc280
-  subdirs:
-    - servant-rawm
-    - servant-rawm-server
+- servant-rawm-1.0.0.0
+- servant-rawm-server-1.0.0.0
