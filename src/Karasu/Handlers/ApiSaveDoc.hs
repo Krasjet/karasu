@@ -30,7 +30,6 @@ data SaveDocBody
    = SaveDocBody
    { docId :: DocId
    , markdown :: Markdown
-     -- ^ version on the client side, we need to check for version conflicts
    , version :: Version
      -- ^ version on the client side, we need to check for version conflicts
    , accessCode :: Maybe AccessCode
@@ -61,7 +60,7 @@ backupMarkdown
   -> Version  -- ^ client side version + 1
   -> IO ()
 backupMarkdown dId md ver = do
-  --  v *almost* unique identifier for the markdown file
+  --  an *almost* unique identifier for the markdown file
   let hash = hashText' md
   let filename = "backup" </> dId </> show ver <> "-" <> hash <.> "md"
   writeFileHandleMissing' filename md
