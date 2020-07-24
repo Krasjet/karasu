@@ -25,6 +25,7 @@ staticSettings root = (defaultWebAppSettings root)
   { ssIndices = map unsafeToPiece ["index.html"]
   , ssRedirectToIndex = True
   , ssAddTrailingSlash = True
+  , ss404Handler = Just handle404
   }
 
 -- * Static server
