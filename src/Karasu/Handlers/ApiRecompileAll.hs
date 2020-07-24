@@ -16,7 +16,7 @@ import Karasu.Models
 import Karasu.Pandoc
 import Karasu.Pandoc.Renderer (HTMLTemplate)
 
-import Control.Monad           (when, void)
+import Control.Monad           (when)
 import Control.Monad.Reader    (asks)
 import Control.Monad.IO.Class (liftIO)
 import Data.Aeson
@@ -48,7 +48,7 @@ recompileDoc tmpl (Entity docKey docInfo) = do
   liftIO $ putStrLn $ "Recompiling " <> docId
   html <- regenPreview (docInfoDocId docInfo) tmpl (docInfoText docInfo)
   -- update existing htmls in database
-  void $ runDb $ updateGet docKey [ DocInfoRenderedHtml =. html ]
+  runDb $ update docKey [ DocInfoRenderedHtml =. html ]
 
 -- | Recomepile all documents
 recompileAll :: RecompileBody -> KHandler Text
