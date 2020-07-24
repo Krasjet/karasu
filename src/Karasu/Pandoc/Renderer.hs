@@ -34,11 +34,12 @@ renderDisplay
   -> HTMLTemplate                 -- ^ template
   -> Text                         -- ^ content of the markdown file
   -> IO (Either PandocError Text) -- ^ error or the final text
-renderDisplay docId = renderWith writeHtml5String (functionalFilters docId <> cosmeticFilters)
+renderDisplay docId = renderWith writeHtml5String
+  (functionalFilters docId <> cosmeticFilters)
 
 renderWith
   :: (WriterOptions -> Pandoc -> PandocIO a) -- ^ writer
-  -> [PandocFilterM IO]                 -- ^ a list of pandoc filters
+  -> [PandocFilterM IO]                      -- ^ a list of pandoc filters
   -> HTMLTemplate                            -- ^ template
   -> Text                                    -- ^ content of the markdown
   -> IO (Either PandocError a)               -- ^ error or the final HTML
