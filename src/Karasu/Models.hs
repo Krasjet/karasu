@@ -22,13 +22,15 @@ type Version = Int
 type MasterPassword = Text
 type AccessCode = Text
 type Markdown = Text
+type EscapedHtml = Text
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 DocInfo
   docId DocId
   accCode AccessCode Maybe
-  version  Version
-  text  Markdown
+  version Version
+  text Markdown
+  renderedHtml EscapedHtml default='nowhere'
   UniqueDocId docId
   deriving Show Eq
 |]

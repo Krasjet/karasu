@@ -9,9 +9,9 @@ import Karasu.Pandoc.Options
 
 import qualified Data.Text as T
 
-import Control.Monad.Except     (throwError)
-import Control.Monad.IO.Class   (liftIO)
-import Data.Text                (Text)
+import Control.Monad.IO.Class (liftIO)
+import Data.Text              (Text)
+import Servant
 import Text.Blaze.Html
 import Text.DocTemplates
 import Text.Pandoc
@@ -33,7 +33,7 @@ renderDisplay
   :: DocId                        -- ^ document id
   -> HTMLTemplate                 -- ^ template
   -> Text                         -- ^ content of the markdown file
-  -> IO (Either PandocError Text) -- ^ error or the final text
+  -> IO (Either PandocError EscapedHtml) -- ^ error or the final text
 renderDisplay docId = renderWith writeHtml5String
   (functionalFilters docId <> cosmeticFilters)
 

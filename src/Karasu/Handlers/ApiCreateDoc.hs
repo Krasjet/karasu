@@ -10,11 +10,13 @@ import Karasu.Database
 import Karasu.Environment
 import Karasu.Handler
 import Karasu.Models
-import Karasu.Pandoc
+import Karasu.Pandoc.Renderer
 
-import qualified Data.Text as T
+import qualified Data.ByteString.Lazy.Char8 as LB8
+import qualified Data.Text                  as T
 
-import Control.Monad           (unless, when, void)
+import Control.Monad           (unless, when)
+import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Reader    (asks)
 import Data.Aeson
 import Data.Char               (isAlphaNum)
@@ -25,11 +27,13 @@ import GHC.Generics
 import Servant
 import System.FilePath         (isPathSeparator, isValid)
 
-data CreateDocBody = CreateDocBody {
-  docId      :: DocId,
-  accessCode :: Maybe AccessCode,
-  masterPass :: MasterPassword
-} deriving (Generic, Show)
+data CreateDocBody
+   = CreateDocBody
+   { docId :: DocId
+   , accessCode :: Maybe AccessCode
+   , masterPass :: MasterPassword
+   }
+  deriving (Generic, Show)
 
 instance ToJSON CreateDocBody
 instance FromJSON CreateDocBody
@@ -59,16 +63,19 @@ createDoc docBody = do
   unless (validId dId) $
     throwError err400 { errBody = "Can you read the document id? I can't." }
 
-  -- finally insert the document
-  let defaultTxt = T.pack $ "---\ntitle: " <> dId <> "\n---\n\n"
-  res <- runDb $ insertUnique $ DocInfo dId (accessCode docBody) 1 defaultTxt
-
-  -- the docId already exist
-  when (isNothing res) $
-    throwError err409 { errBody = "Something is already there." }
-
-  -- save the default markdown preview to file
+  -- prepare initial document
+  let defaultMd = T.pack $ "---\ntitle: " <> dId <> "\n---\n\n"
   tmpl <- asks envTemplate
-  void $ renderSaveMarkdownPreview dId tmpl defaultTxt
+  res <- liftIO $ renderDisplay dId tmpl defaultMd
+
+  case res of
+    Left err -> throwError err400 { errBody = LB8.pack $ show err }
+    Right html  -> do
+      -- rendered successfully, insert the document
+      res' <- runDb $
+        insertUnique $ DocInfo dId (accessCode docBody) 1 defaultMd html
+      -- the docId already exist
+      when (isNothing res') $
+        throwError err409 { errBody = "Something is already there." }
 
   return "The doc is up. Hooray!"

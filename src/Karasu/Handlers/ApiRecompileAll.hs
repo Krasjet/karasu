@@ -43,12 +43,14 @@ recompileDoc
   :: HTMLTemplate
   -> Entity DocInfo
   -> KHandler ()
-recompileDoc tmpl (Entity _ docInfo) = do
+recompileDoc tmpl (Entity docKey docInfo) = do
   let docId = docInfoDocId docInfo
   liftIO $ putStrLn $ "Recompiling " <> docId
-  void $ renderSaveMarkdownPreview (docInfoDocId docInfo) tmpl (docInfoText docInfo)
+  html <- regenPreview (docInfoDocId docInfo) tmpl (docInfoText docInfo)
+  -- update existing htmls in database
+  void $ runDb $ updateGet docKey [ DocInfoRenderedHtml =. html ]
 
--- | Create new document
+-- | Recomepile all documents
 recompileAll :: RecompileBody -> KHandler Text
 recompileAll docBody = do
   correctPass <- asks envMaster

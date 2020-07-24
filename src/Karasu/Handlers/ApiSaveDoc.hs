@@ -74,13 +74,13 @@ throwNewVerAvailable = throwError err409 { errBody = "A newer version of the\
 
 -- | Save the document to file
 saveDoc :: SaveDocBody -> KHandler SaveDocRes
-saveDoc saveBody = do
-  let dId = docId saveBody
-  let clientVer = version saveBody
-  let md = markdown saveBody
+saveDoc reqBody = do
+  let dId = docId reqBody
+  let clientVer = version reqBody
+  let md = markdown reqBody
 
   -- first validate access code
-  (docKey, doc) <- getDocWithValidation dId (accessCode saveBody)
+  (docKey, doc) <- getDocWithValidation dId (accessCode reqBody)
 
   -- back up markdown file in all cases
   let currVer = docInfoVersion doc
@@ -92,12 +92,14 @@ saveDoc saveBody = do
   -- if the client version is outdated, don't update.
   when (clientVer < currVer) throwNewVerAvailable
 
-  -- TODO protect with MVar, since index.html and database needs to be synced
-
-  -- actually update the document (atomic)
-  res <- runDb $ updateGet docKey [ DocInfoVersion +=. 1, DocInfoText =. md ]
-  -- save the rendered markdown to file
+  -- regenerate html
   tmpl <- asks envTemplate
-  h <- renderSaveMarkdownPreview dId tmpl md
+  h <- regenPreview dId tmpl md
+
+  -- update the document (atomic)
+  res <- runDb $ updateGet docKey
+    [ DocInfoVersion +=. 1
+    , DocInfoText =. md
+    , DocInfoRenderedHtml =. h
+    ]
   return $ SaveDocRes (docInfoVersion res) h
-  -- TODO protect with MVar

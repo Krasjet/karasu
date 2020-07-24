@@ -12,29 +12,49 @@ module Karasu.Handlers.ViewDoc (
 import Karasu.Database
 import Karasu.Handler
 import Karasu.Models
+import Libkst.IO
+import Libkst.Monad
 
+import Control.Monad.IO.Class  (liftIO)
+import Database.Persist.Sqlite
 import Network.HTTP.Types
 import Network.Wai
 import Servant
-import Servant.RawM.Server (RawM)
-import System.FilePath    ((<.>), (</>))
+import Servant.RawM.Server     (RawM)
+import System.Directory
+import System.FilePath         ((<.>), (</>))
 
 type ViewDoc = "view"
                :> Capture "docId" DocId
                :> RawM
 
-viewDocApp
-  :: DocId -- ^ the doc id
-  -> Bool  -- ^ docid exists?
+-- | Make index file path from doc id.
+mkPath
+  :: DocId
+  -> FilePath
+mkPath docId = "view" </> docId </> "index" <.> "html"
+
+serveFile
+  :: FilePath -- ^ the doc id
   -> Application
-viewDocApp docId True _ resp = do
+serveFile path _ resp = do
   -- document exists, return preview page
   let header = [("Content-Type", "text/html")]
-  resp $ responseFile status200 header ("view" </> docId </> "index" <.> "html") Nothing
-viewDocApp _ False _ resp =
-  -- nothing found, return 404
-  resp $ responseLBS status404 [] "Nothing here."
+  resp $ responseFile status200 header path Nothing
 
--- | Send the editor page
+-- | Send rendered html
 viewDoc :: DocId -> ServerT RawM KHandler
-viewDoc docId = viewDocApp docId <$> docExists docId
+viewDoc docId = do
+  let fname = mkPath docId
+
+
+  -- if html doesn't exist, pull the latest version from database
+  unlessM (liftIO $ doesFileExist fname) $ do
+    res <- runDb $ getBy $ UniqueDocId docId
+    case res of
+      Nothing ->
+        throwError err404 { errBody = "Nothing here." }
+      Just (Entity _ doc) ->
+        liftIO $ writeFileHandleMissing' fname $ docInfoRenderedHtml doc
+
+  return $ serveFile fname
