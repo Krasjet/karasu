@@ -60,7 +60,7 @@ FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -yq && \
-    apt-get install --no-install-recommends -y texlive-full locales && \
+    apt-get install --no-install-recommends -y texlive-full dvisvgm locales && \
     apt-get --purge remove -y .\*-doc$ && \
     apt-get autoclean autoremove && \
     rm -rf /var/lib/apt/lists/* \
