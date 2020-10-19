@@ -2,8 +2,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeOperators     #-}
 
--- | The route for compiled documents, only for testing. On deployment server,
--- this is handled by nginx.
+-- | The route for rendering compiled documents.
+--
+-- Note that this route will only be called when document is not up-to-date,
+-- normally it would be handled by nginx, when view/docid/index.html is
+-- present.
 module Karasu.Handlers.ViewDoc (
   ViewDoc,
   viewDoc
@@ -47,8 +50,8 @@ viewDoc :: DocId -> ServerT RawM KHandler
 viewDoc docId = do
   let fname = mkPath docId
 
-
-  -- if html doesn't exist, pull the latest version from database
+  -- if html doesn't exist, pull the latest version from database (this
+  -- prevents a race condition, see Karasu.Pandoc.regenPreview)
   unlessM (liftIO $ doesFileExist fname) $ do
     res <- runDb $ getBy $ UniqueDocId docId
     case res of

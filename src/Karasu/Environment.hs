@@ -25,7 +25,7 @@ data KarasuEnv
    , envPort :: !Port
      -- ^ port number of the server
    , envMaster :: !MasterPassword
-     -- ^ master password for creating documents (TODO encryption)
+     -- ^ master password for creating documents
    , envTemplate :: !HTMLTemplate
      -- ^ template HTML file
    }
