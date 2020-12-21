@@ -4,7 +4,7 @@ packages:
 - .
 - pandoc-utils/
 - fl.tr/
-- libkst/
+- chirp/
 
 extra-deps:
 - servant-rawm-1.0.0.0

@@ -43,7 +43,7 @@ WORKDIR /build
 # we only need these two to build the dependencies
 COPY stack.yaml package.yaml /build/
 COPY fl.tr/ /build/fl.tr/
-COPY libkst/ /build/libkst/
+COPY chirp/ /build/chirp/
 COPY pandoc-utils/ /build/pandoc-utils/
 # because of pandoc, this will take a long time
 RUN stack build --dependencies-only

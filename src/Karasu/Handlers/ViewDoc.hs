@@ -15,8 +15,8 @@ module Karasu.Handlers.ViewDoc (
 import Karasu.Database
 import Karasu.Handler
 import Karasu.Models
-import Libkst.IO
-import Libkst.Monad
+import Chirp.IO
+import Chirp.Monad
 
 import Control.Monad.IO.Class  (liftIO)
 import Database.Persist.Sqlite

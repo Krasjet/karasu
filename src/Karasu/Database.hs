@@ -17,7 +17,7 @@ import Karasu.Models
 
 import qualified Data.Text as T
 
-import Libkst.IO
+import Chirp.IO
 import Control.Monad           (void, when)
 import Control.Monad.Except    (MonadError)
 import Control.Monad.IO.Class  (MonadIO, liftIO)

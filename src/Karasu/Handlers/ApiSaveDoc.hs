@@ -21,8 +21,8 @@ import Data.Aeson
 import Data.Text               (Text)
 import Database.Persist.Sqlite
 import GHC.Generics
-import Libkst.Hash
-import Libkst.IO
+import Chirp.Hash
+import Chirp.IO
 import Servant
 import System.FilePath         ((<.>), (</>))
 
